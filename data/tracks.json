@@ -1,0 +1,62 @@
+[
+  {
+    "id": "002-le-revenant-mta4chk2sla4",
+    "titre": "Le revenant",
+    "fichier": "audio/002 - Le revenant.mp3",
+    "type": "valse",
+    "tonalite": "La min",
+    "source": "morvan",
+    "niveau": "maitrise",
+    "notes": "",
+    "loopDebut": 0,
+    "loopFin": 16.74
+  },
+  {
+    "id": "001-marakech-mta47s45i61q",
+    "titre": "Bourrée de  Marakech",
+    "fichier": "audio/001 - Marakech.mp3",
+    "type": "bourree",
+    "tonalite": "La min",
+    "source": "morvan",
+    "niveau": "maitrise",
+    "notes": "",
+    "loopDebut": null,
+    "loopFin": null
+  },
+  {
+    "id": "001-marakech-mta47s45i61q",
+    "titre": "Bourrée de  Marakech",
+    "fichier": "audio/001 - Marakech.mp3",
+    "type": "bourree",
+    "tonalite": "La min",
+    "source": "morvan",
+    "niveau": "maitrise",
+    "notes": "",
+    "loopDebut": null,
+    "loopFin": null
+  },
+  {
+    "id": "exemple-scottish",
+    "titre": "EXEMPLE — Scottish à remplacer",
+    "fichier": "audio/exemple-scottish.mp3",
+    "type": "scottish",
+    "tonalite": "Sol majeur",
+    "source": "",
+    "niveau": "en-cours",
+    "notes": "Deuxième exemple, pour voir le filtre par type fonctionner avec plusieurs entrées.",
+    "loopDebut": 8,
+    "loopFin": 16
+  },
+  {
+    "id": "exemple-valse",
+    "titre": "EXEMPLE — Valse à remplacer",
+    "fichier": "audio/exemple-valse.mp3",
+    "type": "valse",
+    "tonalite": "Ré majeur",
+    "source": "Remplace-moi : d'où vient ce morceau (collectage, bal, transmission...)",
+    "niveau": "a-apprendre",
+    "notes": "Ceci est un exemple. Supprime cette entrée ou édite-la depuis l'appli une fois ton propre fichier audio placé dans audio/.",
+    "loopDebut": null,
+    "loopFin": null
+  }
+]

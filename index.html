@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Répertoire accordéon</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪗</text></svg>">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="app-header">
+  <h1>🪗 Répertoire accordéon</h1>
+  <div class="header-actions">
+    <input type="search" id="search-input" placeholder="Rechercher un titre, une source, une note…" aria-label="Recherche">
+    <button id="add-track-btn" class="btn">+ Ajouter un morceau</button>
+    <button id="export-btn" class="btn btn-secondary">⭳ Exporter tracks.json</button>
+    <input type="file" id="file-input" accept="audio/*" multiple hidden>
+  </div>
+</header>
+
+<div class="app-body">
+
+  <aside class="sidebar">
+    <div class="filter-group">
+      <label for="filter-type">Type de danse</label>
+      <select id="filter-type">
+        <option value="">Tous</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label for="filter-niveau">Niveau</label>
+      <select id="filter-niveau">
+        <option value="">Tous</option>
+        <option value="a-apprendre">À apprendre</option>
+        <option value="en-cours">En cours</option>
+        <option value="maitrise">Maîtrisé</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <span id="track-count" class="track-count"></span>
+    </div>
+    <ul id="track-list" class="track-list"></ul>
+  </aside>
+
+  <main class="player-panel" id="player-panel">
+    <div class="empty-state" id="empty-state">
+      <p>Sélectionne un morceau dans la liste, ou ajoute-en un nouveau.</p>
+    </div>
+
+    <div class="player-content hidden" id="player-content">
+      <div class="player-top">
+        <input type="text" id="edit-titre" class="title-input" placeholder="Titre du morceau">
+        <button id="delete-track-btn" class="btn btn-danger" title="Supprimer ce morceau">🗑</button>
+      </div>
+
+      <div class="waveform-wrap">
+        <canvas id="waveform" height="120"></canvas>
+        <div id="waveform-status" class="waveform-status"></div>
+      </div>
+
+      <div class="transport">
+        <button id="play-btn" class="btn btn-play">▶ Lecture</button>
+        <label class="loop-toggle">
+          <input type="checkbox" id="loop-checkbox" checked>
+          Boucle
+        </label>
+        <span class="time-display"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
+      </div>
+
+      <div class="loop-controls">
+        <div class="loop-field">
+          <label for="loop-start">Début boucle (s)</label>
+          <div class="loop-input-row">
+            <input type="number" id="loop-start" step="0.01" min="0" placeholder="début">
+            <button class="btn btn-small" id="set-loop-start">Définir ici</button>
+          </div>
+        </div>
+        <div class="loop-field">
+          <label for="loop-end">Fin boucle (s)</label>
+          <div class="loop-input-row">
+            <input type="number" id="loop-end" step="0.01" min="0" placeholder="fin">
+            <button class="btn btn-small" id="set-loop-end">Définir ici</button>
+          </div>
+        </div>
+        <button class="btn btn-small btn-secondary" id="clear-loop">Boucle = morceau entier</button>
+      </div>
+
+      <div class="metadata-form">
+        <div class="field">
+          <label for="edit-type">Type de danse</label>
+          <select id="edit-type">
+            <option value="valse">Valse</option>
+            <option value="mazurka">Mazurka</option>
+            <option value="scottish">Scottish</option>
+            <option value="bourree">Bourrée</option>
+            <option value="polka">Polka</option>
+            <option value="an-dro">An dro</option>
+            <option value="hanter-dro">Hanter dro</option>
+            <option value="rond">Rond (de Loudéac, Saint-Vincent…)</option>
+            <option value="plinn">Plinn</option>
+            <option value="gavotte">Gavotte</option>
+            <option value="laride">Laridé</option>
+            <option value="marche">Marche</option>
+            <option value="chapelloise">Chapelloise</option>
+            <option value="cercle">Cercle circassien</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="edit-tonalite">Tonalité</label>
+          <input type="text" id="edit-tonalite" placeholder="ex. Ré majeur">
+        </div>
+        <div class="field">
+          <label for="edit-niveau">Niveau</label>
+          <select id="edit-niveau">
+            <option value="a-apprendre">À apprendre</option>
+            <option value="en-cours">En cours</option>
+            <option value="maitrise">Maîtrisé</option>
+          </select>
+        </div>
+        <div class="field field-wide">
+          <label for="edit-source">Source / collectage</label>
+          <input type="text" id="edit-source" placeholder="ex. collecté auprès de…, appris au stage de…">
+        </div>
+        <div class="field field-wide">
+          <label for="edit-notes">Notes</label>
+          <textarea id="edit-notes" rows="3" placeholder="Repères, doigtés, ce qui coince…"></textarea>
+        </div>
+        <div class="field field-wide">
+          <label for="edit-fichier">Fichier audio (chemin relatif dans le dépôt, une fois déployé)</label>
+          <input type="text" id="edit-fichier" placeholder="audio/mon-morceau.mp3">
+        </div>
+      </div>
+
+      <div class="json-snippet-wrap hidden" id="json-snippet-wrap">
+        <p>Ce morceau n'a été ajouté qu'en local (aperçu navigateur). Pour le rendre permanent : copie le fichier audio dans <code>audio/</code>, puis ajoute ce bloc dans <code>data/tracks.json</code> (ou clique simplement sur « Exporter tracks.json » en haut, qui régénère le fichier complet).</p>
+        <textarea id="json-snippet" readonly rows="6"></textarea>
+      </div>
+    </div>
+  </main>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
