@@ -221,8 +221,8 @@ function slugify(str) {
 
 function emptyTrack(overrides) {
   return Object.assign({
-    id: "", titre: "", fichier: "", type: "valse", categorie: "",
-    toniqueNote: "", toniqueMode: "",
+    id: "", titre: "", titreProvisoire: false, fichier: "", type: "valse", categorie: "",
+    toniqueNote: "", toniqueMode: "", groupe: "Trad",
     source: "", niveau: "a-apprendre", notes: "",
     joueAvec: [],
     loopDebut: null, loopFin: null,
@@ -311,6 +311,30 @@ function populateCategorieFilter() {
     });
 }
 
+function usedGroupes() {
+  const set = new Set(["Trad"]);
+  tracks.forEach(t => { if (t.groupe) set.add(t.groupe); });
+  return Array.from(set).sort((a, b) => a.localeCompare(b, "fr"));
+}
+
+function populateGroupeFilter() {
+  const sel = document.getElementById("filter-groupe");
+  const current = sel.value;
+  sel.querySelectorAll("option:not(:first-child)").forEach(o => o.remove());
+  usedGroupes().forEach(g => {
+    const opt = document.createElement("option");
+    opt.value = g;
+    opt.textContent = g;
+    sel.appendChild(opt);
+  });
+  if (usedGroupes().includes(current)) sel.value = current;
+}
+
+function populateGroupeDatalist() {
+  const list = document.getElementById("groupe-datalist");
+  list.innerHTML = usedGroupes().map(g => '<option value="' + escapeHtml(g) + '"></option>').join("");
+}
+
 function populateMusicienFilter() {
   const sel = document.getElementById("filter-musicien");
   const current = sel.value;
@@ -328,6 +352,8 @@ function refreshFilterOptions() {
   populateTypeFilter();
   populateCategorieFilter();
   populateMusicienFilter();
+  populateGroupeFilter();
+  populateGroupeDatalist();
 }
 
 function toniqueLabel(t) {
@@ -343,19 +369,23 @@ function currentFilters() {
     categorie: document.getElementById("filter-categorie").value,
     niveau: document.getElementById("filter-niveau").value,
     musicien: document.getElementById("filter-musicien").value,
+    groupe: document.getElementById("filter-groupe").value,
+    titreProvisoire: document.getElementById("filter-titre-provisoire").checked,
     q: document.getElementById("search-input").value.trim().toLocaleLowerCase("fr"),
   };
 }
 
 function filteredTracks() {
-  const { type, categorie, niveau, musicien, q } = currentFilters();
+  const { type, categorie, niveau, musicien, groupe, titreProvisoire, q } = currentFilters();
   return tracks.filter(t => {
     if (type && t.type !== type) return false;
     if (categorie && t.categorie !== categorie) return false;
     if (niveau && t.niveau !== niveau) return false;
     if (musicien && !(t.joueAvec || []).includes(musicien)) return false;
+    if (groupe && t.groupe !== groupe) return false;
+    if (titreProvisoire && !t.titreProvisoire) return false;
     if (q) {
-      const hay = [t.titre, t.source, t.notes, toniqueLabel(t), CATEGORIE_LABELS[t.categorie]]
+      const hay = [t.titre, t.source, t.notes, t.groupe, toniqueLabel(t), CATEGORIE_LABELS[t.categorie]]
         .filter(Boolean).join(" ").toLocaleLowerCase("fr");
       if (!hay.includes(q)) return false;
     }
@@ -374,8 +404,11 @@ function renderList() {
     const missing = missingAudioIds.has(t.id);
     const tonique = toniqueLabel(t);
     li.innerHTML =
-      '<span class="t-title">' + escapeHtml(t.titre || "(sans titre)") + '</span>' +
+      '<span class="t-title">' + escapeHtml(t.titre || "(sans titre)") +
+        (t.titreProvisoire ? ' <span class="provisoire-badge" title="Titre provisoire, à confirmer">?</span>' : "") +
+      '</span>' +
       '<span class="t-meta">' + escapeHtml(DANCE_LABELS[t.type] || t.type || "") +
+        (t.groupe ? " · " + escapeHtml(t.groupe) : "") +
         (t.categorie ? " · " + escapeHtml(CATEGORIE_LABELS[t.categorie] || t.categorie) : "") +
         (tonique ? " · " + escapeHtml(tonique) : "") +
         " · " + escapeHtml(NIVEAU_LABELS[t.niveau] || "") +
@@ -461,11 +494,13 @@ async function selectTrack(id) {
 
 function fillEditForm(t) {
   document.getElementById("edit-titre").value = t.titre || "";
+  document.getElementById("edit-titre-provisoire").checked = !!t.titreProvisoire;
   document.getElementById("edit-type").value = t.type || "valse";
   document.getElementById("edit-categorie").value = t.categorie || "";
   document.getElementById("edit-tonique-note").value = t.toniqueNote || "";
   document.getElementById("edit-tonique-mode").value = t.toniqueMode || "";
   document.getElementById("edit-niveau").value = t.niveau || "a-apprendre";
+  document.getElementById("edit-groupe").value = t.groupe || "";
   document.getElementById("edit-source").value = t.source || "";
   document.getElementById("edit-notes").value = t.notes || "";
   document.getElementById("edit-fichier").value = t.fichier || "";
@@ -501,7 +536,7 @@ function onFieldEdit(field, value) {
   // La ligne de méta-infos affichée dans la liste (type, catégorie, tonalité, niveau,
   // titre...) doit rester à jour immédiatement, sans attendre une re-sélection.
   renderList();
-  if (field === "type" || field === "categorie") refreshFilterOptions();
+  if (field === "type" || field === "categorie" || field === "groupe") refreshFilterOptions();
   updateJsonSnippet(t);
   if (field === "loopDebut" || field === "loopFin") drawWaveform();
 }
@@ -518,8 +553,9 @@ function onJoueAvecChange(track) {
 function updateJsonSnippet(t) {
   if (!t.__local) return;
   const clean = {
-    id: t.id, titre: t.titre, fichier: t.fichier, type: t.type, categorie: t.categorie,
-    toniqueNote: t.toniqueNote, toniqueMode: t.toniqueMode,
+    id: t.id, titre: t.titre, titreProvisoire: !!t.titreProvisoire, fichier: t.fichier,
+    type: t.type, categorie: t.categorie,
+    toniqueNote: t.toniqueNote, toniqueMode: t.toniqueMode, groupe: t.groupe,
     source: t.source, niveau: t.niveau, notes: t.notes, joueAvec: t.joueAvec || [],
     loopDebut: t.loopDebut, loopFin: t.loopFin,
   };
@@ -826,8 +862,9 @@ async function deleteCurrentTrack() {
 
 function exportTracksJson() {
   const morceaux = tracks.map(t => ({
-    id: t.id, titre: t.titre, fichier: t.fichier, type: t.type, categorie: t.categorie,
-    toniqueNote: t.toniqueNote, toniqueMode: t.toniqueMode,
+    id: t.id, titre: t.titre, titreProvisoire: !!t.titreProvisoire, fichier: t.fichier,
+    type: t.type, categorie: t.categorie,
+    toniqueNote: t.toniqueNote, toniqueMode: t.toniqueMode, groupe: t.groupe,
     source: t.source, niveau: t.niveau, notes: t.notes, joueAvec: t.joueAvec || [],
     loopDebut: t.loopDebut, loopFin: t.loopFin,
   }));
@@ -866,6 +903,8 @@ function init() {
   document.getElementById("filter-categorie").addEventListener("change", renderList);
   document.getElementById("filter-niveau").addEventListener("change", renderList);
   document.getElementById("filter-musicien").addEventListener("change", renderList);
+  document.getElementById("filter-titre-provisoire").addEventListener("change", renderList);
+  document.getElementById("filter-groupe").addEventListener("change", renderList);
 
   const musicienInput = document.getElementById("musicien-input");
   function addMusicienFromInput() {
@@ -908,11 +947,13 @@ function init() {
   document.getElementById("loop-checkbox").addEventListener("change", restartIfPlaying);
 
   document.getElementById("edit-titre").addEventListener("input", debounce(e => onFieldEdit("titre", e.target.value), 250));
+  document.getElementById("edit-titre-provisoire").addEventListener("change", e => onFieldEdit("titreProvisoire", e.target.checked));
   document.getElementById("edit-type").addEventListener("change", e => onFieldEdit("type", e.target.value));
   document.getElementById("edit-categorie").addEventListener("change", e => onFieldEdit("categorie", e.target.value));
   document.getElementById("edit-tonique-note").addEventListener("change", e => onFieldEdit("toniqueNote", e.target.value));
   document.getElementById("edit-tonique-mode").addEventListener("change", e => onFieldEdit("toniqueMode", e.target.value));
   document.getElementById("edit-niveau").addEventListener("change", e => onFieldEdit("niveau", e.target.value));
+  document.getElementById("edit-groupe").addEventListener("input", debounce(e => onFieldEdit("groupe", e.target.value), 250));
   document.getElementById("edit-source").addEventListener("input", debounce(e => onFieldEdit("source", e.target.value), 250));
   document.getElementById("edit-notes").addEventListener("input", debounce(e => onFieldEdit("notes", e.target.value), 250));
   document.getElementById("edit-fichier").addEventListener("input", debounce(e => onFieldEdit("fichier", e.target.value), 250));

@@ -29,6 +29,12 @@
       </select>
     </div>
     <div class="filter-group">
+      <label for="filter-groupe">Groupe</label>
+      <select id="filter-groupe">
+        <option value="">Tous</option>
+      </select>
+    </div>
+    <div class="filter-group">
       <label for="filter-categorie">Catégorie / origine</label>
       <select id="filter-categorie">
         <option value="">Toutes</option>
@@ -48,6 +54,12 @@
       <select id="filter-musicien">
         <option value="">Tout le monde</option>
       </select>
+    </div>
+    <div class="filter-group">
+      <label class="checkbox-filter">
+        <input type="checkbox" id="filter-titre-provisoire">
+        Titres à confirmer uniquement
+      </label>
     </div>
 
     <div class="filter-group musiciens-panel">
@@ -73,6 +85,10 @@
     <div class="player-content hidden" id="player-content">
       <div class="player-top">
         <input type="text" id="edit-titre" class="title-input" placeholder="Titre du morceau">
+        <label class="titre-provisoire-toggle" title="À cocher si c'est un titre provisoire, à confirmer plus tard">
+          <input type="checkbox" id="edit-titre-provisoire">
+          Titre&nbsp;?
+        </label>
         <button id="delete-track-btn" class="btn btn-danger" title="Supprimer ce morceau">🗑</button>
       </div>
 
@@ -187,6 +203,11 @@
             <option value="en-cours">En cours</option>
             <option value="maitrise">Maîtrisé</option>
           </select>
+        </div>
+        <div class="field">
+          <label for="edit-groupe">Groupe</label>
+          <input type="text" id="edit-groupe" list="groupe-datalist" placeholder="Trad, ou nom du groupe">
+          <datalist id="groupe-datalist"></datalist>
         </div>
         <div class="field field-wide">
           <label for="edit-source">Source / collectage</label>

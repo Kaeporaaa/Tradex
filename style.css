@@ -131,6 +131,23 @@ body {
 }
 .track-count { color: var(--text-dim); font-size: 0.85rem; }
 
+.checkbox-filter {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.t-title .provisoire-badge {
+  color: var(--accent);
+  font-weight: 700;
+  margin-left: 3px;
+}
+
 .musiciens-panel { border-top: 1px solid var(--border); padding-top: 12px; }
 .musicien-add-row { display: flex; gap: 6px; margin-bottom: 6px; }
 .musicien-add-row input {
@@ -208,6 +225,16 @@ body {
   align-items: center;
   margin-bottom: 14px;
 }
+.titre-provisoire-toggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  white-space: nowrap;
+  cursor: pointer;
+}
+.titre-provisoire-toggle:has(input:checked) { color: var(--accent); font-weight: 600; }
 .title-input {
   flex: 1;
   font-size: 1.3rem;

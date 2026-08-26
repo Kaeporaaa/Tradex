@@ -31,9 +31,16 @@ gauche de l'appli). Chaque morceau dans `morceaux` a : un titre, un type de dans
 (`type`), une catégorie/origine (`categorie` : irish, morvan, auvergne, pays-de-l-est,
 autre), une tonalité structurée en deux champs (`toniqueNote` + `toniqueMode`, ex.
 `"mi"` + `"mineur"`), une source/collectage, un niveau de maîtrise, des notes, la liste
-des musiciens qui la jouent aussi (`joueAvec`, tableau de noms), et éventuellement des
-points de boucle (`loopDebut` / `loopFin`, en secondes). C'est ce fichier que tu verses
-dans git pour que ton répertoire soit permanent.
+des musiciens qui la jouent aussi (`joueAvec`, tableau de noms), un groupe (`groupe` —
+« Trad » par défaut, ou le nom d'un groupe que tu tapes toi-même ; les noms déjà saisis
+sont ensuite suggérés automatiquement dès que tu retapes les premières lettres, et un
+filtre dans la colonne de gauche permet de trier par groupe), éventuellement des
+points de boucle (`loopDebut` / `loopFin`, en secondes), et un booléen `titreProvisoire`
+(case « Titre ? » à côté du titre dans l'appli) pour marquer un titre que tu n'es pas
+sûr d'avoir bien identifié — un badge « ? » apparaît alors dans la liste, et un filtre
+dans la colonne de gauche permet d'afficher uniquement ces morceaux-là pour les corriger
+plus tard. C'est ce fichier que tu verses dans git pour que ton répertoire soit
+permanent.
 
 **Ancien format :** si ton `tracks.json` déployé est encore l'ancien format (un simple
 tableau de morceaux, sans roster de musiciens ni tonalité structurée), l'appli continue
