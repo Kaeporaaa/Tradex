@@ -29,6 +29,12 @@
       </select>
     </div>
     <div class="filter-group">
+      <label for="filter-categorie">Catégorie / origine</label>
+      <select id="filter-categorie">
+        <option value="">Toutes</option>
+      </select>
+    </div>
+    <div class="filter-group">
       <label for="filter-niveau">Niveau</label>
       <select id="filter-niveau">
         <option value="">Tous</option>
@@ -37,6 +43,22 @@
         <option value="maitrise">Maîtrisé</option>
       </select>
     </div>
+    <div class="filter-group">
+      <label for="filter-musicien">Répertoire en commun avec</label>
+      <select id="filter-musicien">
+        <option value="">Tout le monde</option>
+      </select>
+    </div>
+
+    <div class="filter-group musiciens-panel">
+      <label>Musiciens connus</label>
+      <div class="musicien-add-row">
+        <input type="text" id="musicien-input" placeholder="Nom du musicien">
+        <button id="musicien-add-btn" class="btn btn-small">Ajouter</button>
+      </div>
+      <ul id="musiciens-list" class="musiciens-list"></ul>
+    </div>
+
     <div class="filter-group">
       <span id="track-count" class="track-count"></span>
     </div>
@@ -88,28 +110,75 @@
 
       <div class="metadata-form">
         <div class="field">
-          <label for="edit-type">Type de danse</label>
+          <label for="edit-type">Type de danse / rythme</label>
           <select id="edit-type">
-            <option value="valse">Valse</option>
-            <option value="mazurka">Mazurka</option>
-            <option value="scottish">Scottish</option>
-            <option value="bourree">Bourrée</option>
-            <option value="polka">Polka</option>
-            <option value="an-dro">An dro</option>
-            <option value="hanter-dro">Hanter dro</option>
-            <option value="rond">Rond (de Loudéac, Saint-Vincent…)</option>
-            <option value="plinn">Plinn</option>
-            <option value="gavotte">Gavotte</option>
-            <option value="laride">Laridé</option>
-            <option value="marche">Marche</option>
-            <option value="chapelloise">Chapelloise</option>
-            <option value="cercle">Cercle circassien</option>
+            <optgroup label="Trad français">
+              <option value="valse">Valse</option>
+              <option value="valse-5-temps">Valse à 5 temps</option>
+              <option value="mazurka">Mazurka</option>
+              <option value="scottish">Scottish</option>
+              <option value="bourree-2-temps">Bourrée à 2 temps</option>
+              <option value="bourree-3-temps">Bourrée à 3 temps</option>
+              <option value="polka">Polka</option>
+              <option value="an-dro">An dro</option>
+              <option value="hanter-dro">Hanter dro</option>
+              <option value="rond">Rond (de Loudéac, Saint-Vincent…)</option>
+              <option value="plinn">Plinn</option>
+              <option value="gavotte">Gavotte</option>
+              <option value="laride">Laridé</option>
+              <option value="marche">Marche</option>
+              <option value="chapelloise">Chapelloise</option>
+              <option value="cercle">Cercle circassien</option>
+            </optgroup>
+            <optgroup label="Irish">
+              <option value="reel">Reel</option>
+              <option value="jig">Jig (gigue)</option>
+              <option value="slip-jig">Slip jig</option>
+              <option value="hornpipe">Hornpipe</option>
+              <option value="air">Air (lent)</option>
+            </optgroup>
+            <optgroup label="Autres mesures">
+              <option value="sept-temps">7 temps</option>
+            </optgroup>
             <option value="autre">Autre</option>
           </select>
         </div>
         <div class="field">
-          <label for="edit-tonalite">Tonalité</label>
-          <input type="text" id="edit-tonalite" placeholder="ex. Ré majeur">
+          <label for="edit-categorie">Catégorie / origine</label>
+          <select id="edit-categorie">
+            <option value="">—</option>
+            <option value="irish">Irish</option>
+            <option value="morvan">Morvan</option>
+            <option value="auvergne">Auvergne</option>
+            <option value="pays-de-l-est">Pays de l'Est</option>
+            <option value="autre">Autre</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="edit-tonique-note">Tonalité — note</label>
+          <select id="edit-tonique-note">
+            <option value="">—</option>
+            <option value="do">Do</option>
+            <option value="do-diese">Do♯</option>
+            <option value="re">Ré</option>
+            <option value="re-diese">Ré♯</option>
+            <option value="mi">Mi</option>
+            <option value="fa">Fa</option>
+            <option value="fa-diese">Fa♯</option>
+            <option value="sol">Sol</option>
+            <option value="sol-diese">Sol♯</option>
+            <option value="la">La</option>
+            <option value="la-diese">La♯</option>
+            <option value="si">Si</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="edit-tonique-mode">Tonalité — mode</label>
+          <select id="edit-tonique-mode">
+            <option value="">—</option>
+            <option value="majeur">Majeur</option>
+            <option value="mineur">Mineur</option>
+          </select>
         </div>
         <div class="field">
           <label for="edit-niveau">Niveau</label>
@@ -122,6 +191,12 @@
         <div class="field field-wide">
           <label for="edit-source">Source / collectage</label>
           <input type="text" id="edit-source" placeholder="ex. collecté auprès de…, appris au stage de…">
+        </div>
+        <div class="field field-wide">
+          <label>Joué aussi par</label>
+          <div id="edit-joueavec" class="joueavec-checkboxes">
+            <span class="joueavec-empty">Ajoute des musiciens dans la colonne de gauche pour pouvoir les cocher ici.</span>
+          </div>
         </div>
         <div class="field field-wide">
           <label for="edit-notes">Notes</label>

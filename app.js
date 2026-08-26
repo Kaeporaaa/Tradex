@@ -4,9 +4,11 @@
 
 const DANCE_LABELS = {
   "valse": "Valse",
+  "valse-5-temps": "Valse à 5 temps",
   "mazurka": "Mazurka",
   "scottish": "Scottish",
-  "bourree": "Bourrée",
+  "bourree-2-temps": "Bourrée à 2 temps",
+  "bourree-3-temps": "Bourrée à 3 temps",
   "polka": "Polka",
   "an-dro": "An dro",
   "hanter-dro": "Hanter dro",
@@ -17,8 +19,30 @@ const DANCE_LABELS = {
   "marche": "Marche",
   "chapelloise": "Chapelloise",
   "cercle": "Cercle circassien",
+  "sept-temps": "7 temps",
+  "reel": "Reel",
+  "jig": "Jig (gigue)",
+  "slip-jig": "Slip jig",
+  "hornpipe": "Hornpipe",
+  "air": "Air (lent)",
   "autre": "Autre",
 };
+
+const CATEGORIE_LABELS = {
+  "irish": "Irish",
+  "morvan": "Morvan",
+  "auvergne": "Auvergne",
+  "pays-de-l-est": "Pays de l'Est",
+  "autre": "Autre",
+};
+
+const NOTE_LABELS = {
+  "do": "Do", "do-diese": "Do♯", "re": "Ré", "re-diese": "Ré♯",
+  "mi": "Mi", "fa": "Fa", "fa-diese": "Fa♯", "sol": "Sol",
+  "sol-diese": "Sol♯", "la": "La", "la-diese": "La♯", "si": "Si",
+};
+
+const MODE_LABELS = { "majeur": "Majeur", "mineur": "Mineur" };
 
 const NIVEAU_LABELS = {
   "a-apprendre": "À apprendre",
@@ -29,11 +53,15 @@ const NIVEAU_LABELS = {
 const LS_OVERRIDES = "accordeon-overrides";
 const LS_LOCAL_IDS = "accordeon-local-ids";
 const LS_DELETED_IDS = "accordeon-deleted-ids";
+const LS_MUSICIENS_ADDED = "accordeon-musiciens-added";
+const LS_MUSICIENS_DELETED = "accordeon-musiciens-deleted";
 
 /* ---------- État global ---------- */
 
-let baseTracks = [];        // tel que chargé depuis data/tracks.json
+let baseTracks = [];        // tel que chargé depuis data/tracks.json (morceaux)
+let baseMusiciens = [];     // tel que chargé depuis data/tracks.json (musiciens)
 let tracks = [];            // liste fusionnée (base + overrides + locaux - supprimés), prête à afficher
+let musiciens = [];         // roster fusionné (base + ajouts locaux - suppressions locales)
 let selectedId = null;
 let missingAudioIds = new Set();
 
@@ -93,6 +121,53 @@ function addDeletedId(id) {
   if (!ids.includes(id)) { ids.push(id); writeJSON(LS_DELETED_IDS, ids); }
 }
 
+/* ---------- Roster de musiciens ---------- */
+
+function getMusiciensAdded() { return readJSON(LS_MUSICIENS_ADDED, []); }
+function getMusiciensDeleted() { return readJSON(LS_MUSICIENS_DELETED, []); }
+
+function rebuildMusiciens() {
+  const added = getMusiciensAdded();
+  const deleted = getMusiciensDeleted();
+  const set = new Set();
+  baseMusiciens.forEach(m => { if (!deleted.includes(m)) set.add(m); });
+  added.forEach(m => { if (!deleted.includes(m)) set.add(m); });
+  musiciens = Array.from(set).sort((a, b) => a.localeCompare(b, "fr"));
+}
+
+function addMusicien(name) {
+  name = (name || "").trim();
+  if (!name) return;
+  const deleted = getMusiciensDeleted();
+  if (deleted.includes(name)) {
+    writeJSON(LS_MUSICIENS_DELETED, deleted.filter(x => x !== name));
+  }
+  if (!musiciens.includes(name)) {
+    const added = getMusiciensAdded();
+    if (!added.includes(name)) { added.push(name); writeJSON(LS_MUSICIENS_ADDED, added); }
+  }
+  rebuildMusiciens();
+}
+
+function removeMusicien(name) {
+  const added = getMusiciensAdded();
+  if (added.includes(name)) {
+    writeJSON(LS_MUSICIENS_ADDED, added.filter(x => x !== name));
+  }
+  if (baseMusiciens.includes(name)) {
+    const deleted = getMusiciensDeleted();
+    if (!deleted.includes(name)) { deleted.push(name); writeJSON(LS_MUSICIENS_DELETED, deleted); }
+  }
+  rebuildMusiciens();
+  // Retire ce musicien des morceaux qui le référencent, pour ne pas garder de tag fantôme
+  tracks.forEach(t => {
+    if (t.joueAvec && t.joueAvec.includes(name)) {
+      t.joueAvec = t.joueAvec.filter(x => x !== name);
+      setOverride(t.id, { joueAvec: t.joueAvec });
+    }
+  });
+}
+
 /* ---------- IndexedDB (audio des morceaux ajoutés en local, pas encore déployés) ---------- */
 
 let dbPromise = null;
@@ -146,26 +221,37 @@ function slugify(str) {
 
 function emptyTrack(overrides) {
   return Object.assign({
-    id: "", titre: "", fichier: "", type: "valse", tonalite: "",
+    id: "", titre: "", fichier: "", type: "valse", categorie: "",
+    toniqueNote: "", toniqueMode: "",
     source: "", niveau: "a-apprendre", notes: "",
+    joueAvec: [],
     loopDebut: null, loopFin: null,
   }, overrides);
 }
 
 async function loadTracks() {
-  const banner = document.getElementById("load-banner");
   try {
     const res = await fetch("data/tracks.json", { cache: "no-store" });
     if (!res.ok) throw new Error("HTTP " + res.status);
-    baseTracks = await res.json();
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      // Ancien format (tableau de morceaux uniquement, sans roster de musiciens).
+      baseTracks = data;
+      baseMusiciens = [];
+    } else {
+      baseTracks = Array.isArray(data.morceaux) ? data.morceaux : [];
+      baseMusiciens = Array.isArray(data.musiciens) ? data.musiciens : [];
+    }
   } catch (e) {
     baseTracks = [];
+    baseMusiciens = [];
     showBanner(
       "Impossible de charger data/tracks.json (" + e.message + "). " +
       "Si tu as ouvert index.html directement depuis le disque, sers le dossier via un petit serveur local " +
       "(voir README.md) — les navigateurs bloquent souvent fetch() sur file://."
     );
   }
+  rebuildMusiciens();
   rebuildMergedTracks();
 }
 
@@ -212,21 +298,65 @@ function populateTypeFilter() {
     });
 }
 
+function populateCategorieFilter() {
+  const sel = document.getElementById("filter-categorie");
+  const used = new Set(tracks.map(t => t.categorie).filter(Boolean));
+  sel.querySelectorAll("option:not(:first-child)").forEach(o => o.remove());
+  Array.from(used).sort((a, b) => (CATEGORIE_LABELS[a] || a).localeCompare(CATEGORIE_LABELS[b] || b, "fr"))
+    .forEach(cat => {
+      const opt = document.createElement("option");
+      opt.value = cat;
+      opt.textContent = CATEGORIE_LABELS[cat] || cat;
+      sel.appendChild(opt);
+    });
+}
+
+function populateMusicienFilter() {
+  const sel = document.getElementById("filter-musicien");
+  const current = sel.value;
+  sel.querySelectorAll("option:not(:first-child)").forEach(o => o.remove());
+  musiciens.forEach(m => {
+    const opt = document.createElement("option");
+    opt.value = m;
+    opt.textContent = m;
+    sel.appendChild(opt);
+  });
+  if (musiciens.includes(current)) sel.value = current;
+}
+
+function refreshFilterOptions() {
+  populateTypeFilter();
+  populateCategorieFilter();
+  populateMusicienFilter();
+}
+
+function toniqueLabel(t) {
+  if (!t.toniqueNote) return "";
+  const note = NOTE_LABELS[t.toniqueNote] || t.toniqueNote;
+  const mode = t.toniqueMode ? (MODE_LABELS[t.toniqueMode] || t.toniqueMode) : "";
+  return mode ? note + " " + mode.toLowerCase() : note;
+}
+
 function currentFilters() {
   return {
     type: document.getElementById("filter-type").value,
+    categorie: document.getElementById("filter-categorie").value,
     niveau: document.getElementById("filter-niveau").value,
+    musicien: document.getElementById("filter-musicien").value,
     q: document.getElementById("search-input").value.trim().toLocaleLowerCase("fr"),
   };
 }
 
 function filteredTracks() {
-  const { type, niveau, q } = currentFilters();
+  const { type, categorie, niveau, musicien, q } = currentFilters();
   return tracks.filter(t => {
     if (type && t.type !== type) return false;
+    if (categorie && t.categorie !== categorie) return false;
     if (niveau && t.niveau !== niveau) return false;
+    if (musicien && !(t.joueAvec || []).includes(musicien)) return false;
     if (q) {
-      const hay = [t.titre, t.source, t.notes, t.tonalite].filter(Boolean).join(" ").toLocaleLowerCase("fr");
+      const hay = [t.titre, t.source, t.notes, toniqueLabel(t), CATEGORIE_LABELS[t.categorie]]
+        .filter(Boolean).join(" ").toLocaleLowerCase("fr");
       if (!hay.includes(q)) return false;
     }
     return true;
@@ -242,10 +372,12 @@ function renderList() {
     li.className = "track-item" + (t.id === selectedId ? " selected" : "");
     li.dataset.id = t.id;
     const missing = missingAudioIds.has(t.id);
+    const tonique = toniqueLabel(t);
     li.innerHTML =
       '<span class="t-title">' + escapeHtml(t.titre || "(sans titre)") + '</span>' +
       '<span class="t-meta">' + escapeHtml(DANCE_LABELS[t.type] || t.type || "") +
-        (t.tonalite ? " · " + escapeHtml(t.tonalite) : "") +
+        (t.categorie ? " · " + escapeHtml(CATEGORIE_LABELS[t.categorie] || t.categorie) : "") +
+        (tonique ? " · " + escapeHtml(tonique) : "") +
         " · " + escapeHtml(NIVEAU_LABELS[t.niveau] || "") +
         (t.__local ? " · local, non déployé" : "") +
         (missing ? ' <span class="missing">· fichier introuvable</span>' : "") +
@@ -256,6 +388,18 @@ function renderList() {
   document.getElementById("track-count").textContent =
     items.length + " morceau" + (items.length > 1 ? "x" : "") +
     (tracks.length !== items.length ? " (sur " + tracks.length + ")" : "");
+}
+
+function renderMusiciensList() {
+  const ul = document.getElementById("musiciens-list");
+  ul.innerHTML = "";
+  musiciens.forEach(m => {
+    const li = document.createElement("li");
+    li.className = "musicien-item";
+    li.innerHTML = '<span>' + escapeHtml(m) + '</span><button type="button" class="musicien-remove" data-name="' +
+      escapeHtml(m) + '" title="Retirer ce musicien">×</button>';
+    ul.appendChild(li);
+  });
 }
 
 function escapeHtml(s) {
@@ -318,7 +462,9 @@ async function selectTrack(id) {
 function fillEditForm(t) {
   document.getElementById("edit-titre").value = t.titre || "";
   document.getElementById("edit-type").value = t.type || "valse";
-  document.getElementById("edit-tonalite").value = t.tonalite || "";
+  document.getElementById("edit-categorie").value = t.categorie || "";
+  document.getElementById("edit-tonique-note").value = t.toniqueNote || "";
+  document.getElementById("edit-tonique-mode").value = t.toniqueMode || "";
   document.getElementById("edit-niveau").value = t.niveau || "a-apprendre";
   document.getElementById("edit-source").value = t.source || "";
   document.getElementById("edit-notes").value = t.notes || "";
@@ -326,6 +472,21 @@ function fillEditForm(t) {
   document.getElementById("loop-start").value = t.loopDebut != null ? t.loopDebut : "";
   document.getElementById("loop-end").value = t.loopFin != null ? t.loopFin : "";
   document.getElementById("json-snippet-wrap").classList.toggle("hidden", !t.__local);
+  renderJoueAvecCheckboxes(t);
+}
+
+function renderJoueAvecCheckboxes(t) {
+  const container = document.getElementById("edit-joueavec");
+  if (musiciens.length === 0) {
+    container.innerHTML = '<span class="joueavec-empty">Ajoute des musiciens dans la colonne de gauche pour pouvoir les cocher ici.</span>';
+    return;
+  }
+  const joueAvec = t.joueAvec || [];
+  container.innerHTML = musiciens.map(m => {
+    const checked = joueAvec.includes(m) ? " checked" : "";
+    return '<label class="joueavec-chip"><input type="checkbox" value="' + escapeHtml(m) + '"' + checked + '> ' +
+      escapeHtml(m) + '</label>';
+  }).join("");
 }
 
 function currentTrack() {
@@ -337,16 +498,29 @@ function onFieldEdit(field, value) {
   if (!t) return;
   t[field] = value;
   setOverride(t.id, { [field]: value });
-  if (field === "titre") renderList();
+  // La ligne de méta-infos affichée dans la liste (type, catégorie, tonalité, niveau,
+  // titre...) doit rester à jour immédiatement, sans attendre une re-sélection.
+  renderList();
+  if (field === "type" || field === "categorie") refreshFilterOptions();
   updateJsonSnippet(t);
   if (field === "loopDebut" || field === "loopFin") drawWaveform();
+}
+
+function onJoueAvecChange(track) {
+  const container = document.getElementById("edit-joueavec");
+  const checked = Array.from(container.querySelectorAll("input[type=checkbox]:checked")).map(cb => cb.value);
+  track.joueAvec = checked;
+  setOverride(track.id, { joueAvec: checked });
+  updateJsonSnippet(track);
+  renderList();
 }
 
 function updateJsonSnippet(t) {
   if (!t.__local) return;
   const clean = {
-    id: t.id, titre: t.titre, fichier: t.fichier, type: t.type,
-    tonalite: t.tonalite, source: t.source, niveau: t.niveau, notes: t.notes,
+    id: t.id, titre: t.titre, fichier: t.fichier, type: t.type, categorie: t.categorie,
+    toniqueNote: t.toniqueNote, toniqueMode: t.toniqueMode,
+    source: t.source, niveau: t.niveau, notes: t.notes, joueAvec: t.joueAvec || [],
     loopDebut: t.loopDebut, loopFin: t.loopFin,
   };
   document.getElementById("json-snippet").value = JSON.stringify(clean, null, 2) + ",";
@@ -622,7 +796,7 @@ async function handleFilesAdded(fileList) {
     lastId = id;
   }
   rebuildMergedTracks();
-  populateTypeFilter();
+  refreshFilterOptions();
   renderList();
   if (lastId) selectTrack(lastId);
 }
@@ -642,7 +816,7 @@ async function deleteCurrentTrack() {
   selectedId = null;
   currentBuffer = null;
   rebuildMergedTracks();
-  populateTypeFilter();
+  refreshFilterOptions();
   renderList();
   document.getElementById("player-content").classList.add("hidden");
   document.getElementById("empty-state").classList.remove("hidden");
@@ -651,12 +825,14 @@ async function deleteCurrentTrack() {
 /* ---------- Export tracks.json ---------- */
 
 function exportTracksJson() {
-  const clean = tracks.map(t => ({
-    id: t.id, titre: t.titre, fichier: t.fichier, type: t.type,
-    tonalite: t.tonalite, source: t.source, niveau: t.niveau, notes: t.notes,
+  const morceaux = tracks.map(t => ({
+    id: t.id, titre: t.titre, fichier: t.fichier, type: t.type, categorie: t.categorie,
+    toniqueNote: t.toniqueNote, toniqueMode: t.toniqueMode,
+    source: t.source, niveau: t.niveau, notes: t.notes, joueAvec: t.joueAvec || [],
     loopDebut: t.loopDebut, loopFin: t.loopFin,
   }));
-  const blob = new Blob([JSON.stringify(clean, null, 2)], { type: "application/json" });
+  const data = { musiciens: musiciens, morceaux: morceaux };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
   a.href = url;
@@ -687,7 +863,36 @@ function init() {
 
   document.getElementById("search-input").addEventListener("input", debounce(renderList, 150));
   document.getElementById("filter-type").addEventListener("change", renderList);
+  document.getElementById("filter-categorie").addEventListener("change", renderList);
   document.getElementById("filter-niveau").addEventListener("change", renderList);
+  document.getElementById("filter-musicien").addEventListener("change", renderList);
+
+  const musicienInput = document.getElementById("musicien-input");
+  function addMusicienFromInput() {
+    if (!musicienInput.value.trim()) return;
+    addMusicien(musicienInput.value);
+    musicienInput.value = "";
+    renderMusiciensList();
+    populateMusicienFilter();
+    const t = currentTrack();
+    if (t) renderJoueAvecCheckboxes(t);
+  }
+  document.getElementById("musicien-add-btn").addEventListener("click", addMusicienFromInput);
+  musicienInput.addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); addMusicienFromInput(); } });
+  document.getElementById("musiciens-list").addEventListener("click", e => {
+    const btn = e.target.closest(".musicien-remove");
+    if (!btn) return;
+    removeMusicien(btn.dataset.name);
+    renderMusiciensList();
+    populateMusicienFilter();
+    renderList();
+    const t = currentTrack();
+    if (t) renderJoueAvecCheckboxes(t);
+  });
+  document.getElementById("edit-joueavec").addEventListener("change", () => {
+    const t = currentTrack();
+    if (t) onJoueAvecChange(t);
+  });
 
   document.getElementById("add-track-btn").addEventListener("click", () => {
     document.getElementById("file-input").click();
@@ -704,7 +909,9 @@ function init() {
 
   document.getElementById("edit-titre").addEventListener("input", debounce(e => onFieldEdit("titre", e.target.value), 250));
   document.getElementById("edit-type").addEventListener("change", e => onFieldEdit("type", e.target.value));
-  document.getElementById("edit-tonalite").addEventListener("input", debounce(e => onFieldEdit("tonalite", e.target.value), 250));
+  document.getElementById("edit-categorie").addEventListener("change", e => onFieldEdit("categorie", e.target.value));
+  document.getElementById("edit-tonique-note").addEventListener("change", e => onFieldEdit("toniqueNote", e.target.value));
+  document.getElementById("edit-tonique-mode").addEventListener("change", e => onFieldEdit("toniqueMode", e.target.value));
   document.getElementById("edit-niveau").addEventListener("change", e => onFieldEdit("niveau", e.target.value));
   document.getElementById("edit-source").addEventListener("input", debounce(e => onFieldEdit("source", e.target.value), 250));
   document.getElementById("edit-notes").addEventListener("input", debounce(e => onFieldEdit("notes", e.target.value), 250));
@@ -743,7 +950,8 @@ function init() {
   window.addEventListener("resize", debounce(() => { if (currentBuffer) drawWaveform(); }, 150));
 
   loadTracks().then(() => {
-    populateTypeFilter();
+    refreshFilterOptions();
+    renderMusiciensList();
     renderList();
   });
 }

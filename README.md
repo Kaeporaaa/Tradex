@@ -17,10 +17,28 @@ repertoire-accordeon/
     (tes fichiers .mp3 vont ici)
 ```
 
-`tracks.json` est la source de vérité : chaque morceau y a un titre, un type de danse,
-une tonalité, une source/collectage, un niveau de maîtrise, des notes, et éventuellement
-des points de boucle (`loopDebut` / `loopFin`, en secondes). C'est ce fichier que tu
-verses dans git pour que ton répertoire soit permanent.
+`tracks.json` est la source de vérité. Il contient un objet à deux clés :
+
+```json
+{
+  "musiciens": ["Julien", "Camille"],
+  "morceaux": [ { "id": "...", "titre": "...", ... } ]
+}
+```
+
+`musiciens` est la liste des musiciens que tu connais (gérée depuis la colonne de
+gauche de l'appli). Chaque morceau dans `morceaux` a : un titre, un type de danse/rythme
+(`type`), une catégorie/origine (`categorie` : irish, morvan, auvergne, pays-de-l-est,
+autre), une tonalité structurée en deux champs (`toniqueNote` + `toniqueMode`, ex.
+`"mi"` + `"mineur"`), une source/collectage, un niveau de maîtrise, des notes, la liste
+des musiciens qui la jouent aussi (`joueAvec`, tableau de noms), et éventuellement des
+points de boucle (`loopDebut` / `loopFin`, en secondes). C'est ce fichier que tu verses
+dans git pour que ton répertoire soit permanent.
+
+**Ancien format :** si ton `tracks.json` déployé est encore l'ancien format (un simple
+tableau de morceaux, sans roster de musiciens ni tonalité structurée), l'appli continue
+de le charger sans erreur — mais les morceaux qu'il contient n'auront pas de catégorie
+ni de tonalité tant que tu ne les auras pas rééditées avec les nouveaux champs.
 
 ## Tester en local avant de déployer
 
