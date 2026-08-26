@@ -1,62 +1,164 @@
-[
-  {
-    "id": "002-le-revenant-mta4chk2sla4",
-    "titre": "Le revenant",
-    "fichier": "audio/002 - Le revenant.mp3",
-    "type": "valse",
-    "tonalite": "La min",
-    "source": "morvan",
-    "niveau": "maitrise",
-    "notes": "",
-    "loopDebut": 0,
-    "loopFin": 16.74
-  },
-  {
-    "id": "001-marakech-mta47s45i61q",
-    "titre": "Bourrée de  Marakech",
-    "fichier": "audio/001 - Marakech.mp3",
-    "type": "bourree",
-    "tonalite": "La min",
-    "source": "morvan",
-    "niveau": "maitrise",
-    "notes": "",
-    "loopDebut": null,
-    "loopFin": null
-  },
-  {
-    "id": "001-marakech-mta47s45i61q",
-    "titre": "Bourrée de  Marakech",
-    "fichier": "audio/001 - Marakech.mp3",
-    "type": "bourree",
-    "tonalite": "La min",
-    "source": "morvan",
-    "niveau": "maitrise",
-    "notes": "",
-    "loopDebut": null,
-    "loopFin": null
-  },
-  {
-    "id": "exemple-scottish",
-    "titre": "EXEMPLE — Scottish à remplacer",
-    "fichier": "audio/exemple-scottish.mp3",
-    "type": "scottish",
-    "tonalite": "Sol majeur",
-    "source": "",
-    "niveau": "en-cours",
-    "notes": "Deuxième exemple, pour voir le filtre par type fonctionner avec plusieurs entrées.",
-    "loopDebut": 8,
-    "loopFin": 16
-  },
-  {
-    "id": "exemple-valse",
-    "titre": "EXEMPLE — Valse à remplacer",
-    "fichier": "audio/exemple-valse.mp3",
-    "type": "valse",
-    "tonalite": "Ré majeur",
-    "source": "Remplace-moi : d'où vient ce morceau (collectage, bal, transmission...)",
-    "niveau": "a-apprendre",
-    "notes": "Ceci est un exemple. Supprime cette entrée ou édite-la depuis l'appli une fois ton propre fichier audio placé dans audio/.",
-    "loopDebut": null,
-    "loopFin": null
-  }
-]
+{
+  "musiciens": [
+    "Alex Luzy",
+    "Aline",
+    "Damien",
+    "Ero-Cook",
+    "Jean",
+    "Justin",
+    "Nina",
+    "Sam",
+    "Thomas Luzy",
+    "Toncarounet"
+  ],
+  "morceaux": [
+    {
+      "id": "001-marakech-mta47s45i61q",
+      "titre": "Bourrée de  Marakech",
+      "titreProvisoire": false,
+      "fichier": "audio/001 - Marakech.mp3",
+      "type": "bourree-2-temps",
+      "categorie": "morvan",
+      "toniqueNote": "la",
+      "toniqueMode": "mineur",
+      "groupe": "Trad",
+      "source": "morvan",
+      "niveau": "maitrise",
+      "notes": "",
+      "joueAvec": [
+        "Aline",
+        "Damien",
+        "Ero-Cook",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
+      "loopDebut": null,
+      "loopFin": null
+    },
+    {
+      "id": "001-marakech-mta47s45i61q",
+      "titre": "Bourrée de  Marakech",
+      "titreProvisoire": false,
+      "fichier": "audio/001 - Marakech.mp3",
+      "type": "bourree-2-temps",
+      "categorie": "morvan",
+      "toniqueNote": "la",
+      "toniqueMode": "mineur",
+      "groupe": "Trad",
+      "source": "morvan",
+      "niveau": "maitrise",
+      "notes": "",
+      "joueAvec": [
+        "Aline",
+        "Damien",
+        "Ero-Cook",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
+      "loopDebut": null,
+      "loopFin": null
+    },
+    {
+      "id": "003-la-mal-aimable-mta52ek2tmqg",
+      "titre": "La mal Aimable",
+      "titreProvisoire": false,
+      "fichier": "audio/003 - La mal Aimable.mp3",
+      "type": "valse",
+      "categorie": "morvan",
+      "toniqueNote": "la",
+      "toniqueMode": "mineur",
+      "groupe": "Trad",
+      "source": "morvan",
+      "niveau": "maitrise",
+      "notes": "",
+      "joueAvec": [
+        "Aline",
+        "Damien",
+        "Ero-Cook",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
+      "loopDebut": 0.8,
+      "loopFin": 35.73
+    },
+    {
+      "id": "002-le-revenant-mta4chk2sla4",
+      "titre": "Le revenant",
+      "titreProvisoire": false,
+      "fichier": "audio/002 - Le revenant.mp3",
+      "type": "valse",
+      "categorie": "morvan",
+      "toniqueNote": "la",
+      "toniqueMode": "mineur",
+      "groupe": "Trad",
+      "source": "morvan",
+      "niveau": "maitrise",
+      "notes": "",
+      "joueAvec": [
+        "Aline",
+        "Damien",
+        "Ero-Cook",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
+      "loopDebut": 0,
+      "loopFin": 16.74
+    },
+    {
+      "id": "011-refut-scottish-do-mtaki8u0fm60",
+      "titre": "refut scottish do",
+      "titreProvisoire": true,
+      "fichier": "audio/011 - refut - scottish do.mp3",
+      "type": "valse",
+      "categorie": "morvan",
+      "toniqueNote": "do",
+      "toniqueMode": "majeur",
+      "groupe": "Re-fût de Chêne",
+      "source": "",
+      "niveau": "maitrise",
+      "notes": "Majeur/mineur",
+      "joueAvec": [
+        "Aline",
+        "Ero-Cook",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
+      "loopDebut": null,
+      "loopFin": null
+    },
+    {
+      "id": "004-venezuela-mta56sj1nwdi",
+      "titre": "Venezuela",
+      "titreProvisoire": false,
+      "fichier": "audio/004 - Venezuela.mp3",
+      "type": "valse",
+      "categorie": "autre",
+      "toniqueNote": "la",
+      "toniqueMode": "mineur",
+      "groupe": "Trad",
+      "source": "morvan",
+      "niveau": "maitrise",
+      "notes": "Valse Venezuellienne",
+      "joueAvec": [
+        "Aline",
+        "Damien",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
+      "loopDebut": 1.44,
+      "loopFin": 64.28
+    }
+  ]
+}
