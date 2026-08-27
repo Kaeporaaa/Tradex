@@ -23,6 +23,8 @@ const DANCE_LABELS = {
   "reel": "Reel",
   "jig": "Jig (gigue)",
   "slip-jig": "Slip jig",
+  "slide": "Slide",
+  "barndance": "Barndance",
   "hornpipe": "Hornpipe",
   "air": "Air (lent)",
   "autre": "Autre",
