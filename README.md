@@ -29,7 +29,7 @@ repertoire-accordeon/
 `musiciens` est la liste des musiciens que tu connais (gérée depuis la colonne de
 gauche de l'appli). Chaque morceau dans `morceaux` a : un titre, un type de danse/rythme
 (`type`), une catégorie/origine (`categorie` : irish, morvan, auvergne, pays-de-l-est,
-autre), une tonalité structurée en deux champs (`toniqueNote` + `toniqueMode`, ex.
+breton, ecosse, angleterre, autre), une tonalité structurée en deux champs (`toniqueNote` + `toniqueMode`, ex.
 `"mi"` + `"mineur"`), une source/collectage, un niveau de maîtrise, des notes, la liste
 des musiciens qui la jouent aussi (`joueAvec`, tableau de noms), un groupe (`groupe` —
 « Trad » par défaut, ou le nom d'un groupe que tu tapes toi-même ; les noms déjà saisis

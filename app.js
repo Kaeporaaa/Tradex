@@ -33,6 +33,9 @@ const CATEGORIE_LABELS = {
   "morvan": "Morvan",
   "auvergne": "Auvergne",
   "pays-de-l-est": "Pays de l'Est",
+  "breton": "Breton",
+  "ecosse": "Écosse",
+  "angleterre": "Angleterre",
   "autre": "Autre",
 };
 
