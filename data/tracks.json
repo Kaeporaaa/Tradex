@@ -2399,31 +2399,6 @@
       "loopFin": 35.73
     },
     {
-      "id": "003-la-mal-aimable-mta52ek2tmqg",
-      "titre": "La mal Aimable",
-      "titreProvisoire": false,
-      "fichier": "audio/003 - La mal Aimable.mp3",
-      "type": "valse",
-      "categorie": "morvan",
-      "toniqueNote": "la",
-      "toniqueMode": "mineur",
-      "groupe": "Trad",
-      "source": "morvan",
-      "niveau": "maitrise",
-      "notes": "",
-      "joueAvec": [
-        "Aline",
-        "Damien",
-        "Ero-Cook",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
-      ],
-      "loopDebut": 0.8,
-      "loopFin": 35.73
-    },
-    {
       "id": "078-la-sansonette-la-min",
       "titre": "La Sansonette la min",
       "titreProvisoire": true,
@@ -3982,30 +3957,6 @@
         "Toncarounet",
         "Aline",
         "Ero-Cook"
-      ],
-      "loopDebut": null,
-      "loopFin": null
-    },
-    {
-      "id": "011-refut-scottish-do-mtaki8u0fm60",
-      "titre": "refut scottish do",
-      "titreProvisoire": true,
-      "fichier": "audio/011 - refut - scottish do.mp3",
-      "type": "valse",
-      "categorie": "morvan",
-      "toniqueNote": "do",
-      "toniqueMode": "majeur",
-      "groupe": "Re-fût de Chêne",
-      "source": "",
-      "niveau": "maitrise",
-      "notes": "Majeur/mineur",
-      "joueAvec": [
-        "Aline",
-        "Ero-Cook",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
       ],
       "loopDebut": null,
       "loopFin": null
@@ -5845,30 +5796,6 @@
       "joueAvec": [],
       "loopDebut": null,
       "loopFin": null
-    },
-    {
-      "id": "004-venezuela-mta56sj1nwdi",
-      "titre": "Venezuela",
-      "titreProvisoire": false,
-      "fichier": "audio/004 - Venezuela.mp3",
-      "type": "valse",
-      "categorie": "autre",
-      "toniqueNote": "la",
-      "toniqueMode": "mineur",
-      "groupe": "Trad",
-      "source": "morvan",
-      "niveau": "maitrise",
-      "notes": "Valse Venezuellienne",
-      "joueAvec": [
-        "Aline",
-        "Damien",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
-      ],
-      "loopDebut": 1.44,
-      "loopFin": 64.28
     },
     {
       "id": "004-venezuela-mta56sj1nwdi",
