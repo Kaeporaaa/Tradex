@@ -52,6 +52,7 @@ const MODE_LABELS = { "majeur": "Majeur", "mineur": "Mineur" };
 
 const NIVEAU_LABELS = {
   "a-apprendre": "À apprendre",
+  "a-bosser": "À bosser",
   "en-cours": "En cours",
   "maitrise": "Maîtrisé",
 };
@@ -80,7 +81,8 @@ let playStartOffset = 0;
 let pausedOffset = 0;
 let rafId = null;
 let peaksCache = null; // Float32Array de pics min/max pour le morceau chargé
-let dragState = null;  // { startX, moved } pendant un drag sur la waveform
+let dragState = null;  // { startX, startTime, moved, lastX } pendant un drag/tap sur la waveform
+let playbackRate = 1;  // vitesse de lecture courante (1, 0.75, 0.5)
 
 /* ---------- Petits utilitaires localStorage ---------- */
 
@@ -459,6 +461,12 @@ async function selectTrack(id) {
 
   document.getElementById("empty-state").classList.add("hidden");
   document.getElementById("player-content").classList.remove("hidden");
+  showPlayerView();
+
+  // Nouveau morceau : on repart en vue "lecteur", section Edit repliée, vitesse normale.
+  document.getElementById("edit-section").open = false;
+  playbackRate = 1;
+  updateSpeedButtons();
 
   fillEditForm(t);
   updateJsonSnippet(t);
@@ -494,6 +502,15 @@ async function selectTrack(id) {
       "Fichier audio introuvable (" + t.fichier + "). " + e.message;
     renderList();
   }
+}
+
+/* ---------- Bascule vue "liste" / vue "lecteur" (même comportement à toute taille d'écran) ---------- */
+
+function showPlayerView() {
+  document.body.classList.add("view-player");
+}
+function showListView() {
+  document.body.classList.remove("view-player");
 }
 
 /* ---------- Formulaire d'édition ---------- */
@@ -653,28 +670,36 @@ function xToTime(clientX) {
   return ratio * (currentBuffer ? currentBuffer.duration : 0);
 }
 
-function setupWaveformInteraction() {
-  const canvas = document.getElementById("waveform");
-  canvas.addEventListener("mousedown", (e) => {
-    if (!currentBuffer) return;
-    dragState = { startX: e.clientX, startTime: xToTime(e.clientX), moved: false };
-  });
-  window.addEventListener("mousemove", (e) => {
-    if (!dragState || !currentBuffer) return;
-    if (Math.abs(e.clientX - dragState.startX) > 4) dragState.moved = true;
-    if (dragState.moved) {
-      const t = currentTrack();
-      const a = dragState.startTime, b = xToTime(e.clientX);
-      t.loopDebut = Math.round(Math.min(a, b) * 100) / 100;
-      t.loopFin = Math.round(Math.max(a, b) * 100) / 100;
-      document.getElementById("loop-start").value = t.loopDebut;
-      document.getElementById("loop-end").value = t.loopFin;
-      document.getElementById("loop-checkbox").checked = true;
-      drawWaveform();
-    }
-  });
-  window.addEventListener("mouseup", (e) => {
-    if (!dragState || !currentBuffer) return;
+function isEditOpen() {
+  const d = document.getElementById("edit-section");
+  return !!(d && d.open);
+}
+
+function waveformDragStart(x) {
+  if (!currentBuffer) return;
+  dragState = { startX: x, startTime: xToTime(x), moved: false, lastX: x };
+}
+
+function waveformDragMove(x) {
+  if (!dragState || !currentBuffer) return;
+  if (Math.abs(x - dragState.startX) > 4) dragState.moved = true;
+  dragState.lastX = x;
+  if (!isEditOpen()) return; // en vue lecteur : pas de redéfinition de boucle en glissant
+  if (dragState.moved) {
+    const t = currentTrack();
+    const a = dragState.startTime, b = xToTime(x);
+    t.loopDebut = Math.round(Math.min(a, b) * 100) / 100;
+    t.loopFin = Math.round(Math.max(a, b) * 100) / 100;
+    document.getElementById("loop-start").value = t.loopDebut;
+    document.getElementById("loop-end").value = t.loopFin;
+    document.getElementById("loop-checkbox").checked = true;
+    drawWaveform();
+  }
+}
+
+function waveformDragEnd() {
+  if (!dragState || !currentBuffer) { dragState = null; return; }
+  if (isEditOpen()) {
     if (!dragState.moved) {
       seekTo(dragState.startTime);
     } else {
@@ -682,8 +707,34 @@ function setupWaveformInteraction() {
       setOverride(t.id, { loopDebut: t.loopDebut, loopFin: t.loopFin });
       updateJsonSnippet(t);
     }
-    dragState = null;
-  });
+  } else {
+    // Vue lecteur : un tap (ou un glisser relâché) lance la lecture depuis ce point.
+    seekAndPlay(xToTime(dragState.lastX));
+  }
+  dragState = null;
+}
+
+function setupWaveformInteraction() {
+  const canvas = document.getElementById("waveform");
+
+  canvas.addEventListener("mousedown", (e) => waveformDragStart(e.clientX));
+  window.addEventListener("mousemove", (e) => waveformDragMove(e.clientX));
+  window.addEventListener("mouseup", () => waveformDragEnd());
+
+  canvas.addEventListener("touchstart", (e) => {
+    if (!currentBuffer) return;
+    e.preventDefault();
+    waveformDragStart(e.touches[0].clientX);
+  }, { passive: false });
+  canvas.addEventListener("touchmove", (e) => {
+    if (!dragState) return;
+    e.preventDefault();
+    waveformDragMove(e.touches[0].clientX);
+  }, { passive: false });
+  canvas.addEventListener("touchend", (e) => {
+    e.preventDefault();
+    waveformDragEnd();
+  }, { passive: false });
 }
 
 /* ---------- Lecture / boucle (Web Audio API) ---------- */
@@ -698,7 +749,9 @@ function effectiveLoopRange(t) {
 function computeCurrentPosition() {
   if (!currentBuffer) return 0;
   if (!isPlaying) return pausedOffset;
-  const elapsed = audioCtx.currentTime - playStartContextTime;
+  // elapsed est exprimé en temps "buffer" (position dans le morceau), pas en temps réel écoulé :
+  // à vitesse 0.5x, une seconde réelle ne fait avancer la lecture que d'une demi-seconde dans le morceau.
+  const elapsed = (audioCtx.currentTime - playStartContextTime) * playbackRate;
   const looping = document.getElementById("loop-checkbox").checked;
   const t = currentTrack();
   if (!looping) {
@@ -717,6 +770,7 @@ function startPlayback(offset) {
   const t = currentTrack();
   const node = audioCtx.createBufferSource();
   node.buffer = currentBuffer;
+  node.playbackRate.value = playbackRate;
   const looping = document.getElementById("loop-checkbox").checked;
   if (looping) {
     const { start, end } = effectiveLoopRange(t);
@@ -787,6 +841,35 @@ function seekTo(time) {
     drawWaveform();
     document.getElementById("time-current").textContent = formatTime(pausedOffset);
   }
+}
+
+// Comme seekTo, mais démarre toujours la lecture (utilisé par un tap sur la forme d'onde
+// en vue "lecteur", où il n'y a pas de bouton dédié — taper doit lire depuis cet endroit).
+function seekAndPlay(time) {
+  if (!currentBuffer) return;
+  pausedOffset = Math.max(0, Math.min(time, currentBuffer.duration));
+  if (audioCtx.state === "suspended") audioCtx.resume();
+  stopCurrentNode();
+  startPlayback(pausedOffset);
+}
+
+function setPlaybackRate(rate) {
+  if (isPlaying) {
+    const pos = computeCurrentPosition(); // calculé avec l'ancienne vitesse
+    playbackRate = rate;
+    stopCurrentNode();
+    startPlayback(pos);
+  } else {
+    playbackRate = rate;
+  }
+  updateSpeedButtons();
+}
+
+function updateSpeedButtons() {
+  document.querySelectorAll(".speed-btn").forEach(btn => {
+    const active = parseFloat(btn.dataset.rate) === playbackRate;
+    btn.classList.toggle("active", active);
+  });
 }
 
 function restartIfPlaying() {
@@ -862,6 +945,7 @@ async function deleteCurrentTrack() {
   renderList();
   document.getElementById("player-content").classList.add("hidden");
   document.getElementById("empty-state").classList.remove("hidden");
+  showListView();
 }
 
 /* ---------- Export tracks.json ---------- */
@@ -951,6 +1035,22 @@ function init() {
 
   document.getElementById("play-btn").addEventListener("click", togglePlay);
   document.getElementById("loop-checkbox").addEventListener("change", restartIfPlaying);
+  document.querySelectorAll(".speed-btn").forEach(btn => {
+    btn.addEventListener("click", () => setPlaybackRate(parseFloat(btn.dataset.rate)));
+  });
+
+  document.getElementById("back-to-list-btn").addEventListener("click", () => {
+    stopPlayback();
+    showListView();
+  });
+  document.getElementById("toggle-musiciens-btn").addEventListener("click", () => {
+    document.getElementById("musiciens-panel").classList.toggle("hidden");
+  });
+  // La vue lecteur en deux volets ("Edit" ouvert sur grand écran) redimensionne la
+  // forme d'onde : on la redessine au moment où la section s'ouvre/se ferme.
+  document.getElementById("edit-section").addEventListener("toggle", () => {
+    if (currentBuffer) requestAnimationFrame(drawWaveform);
+  });
 
   document.getElementById("edit-titre").addEventListener("input", debounce(e => onFieldEdit("titre", e.target.value), 250));
   document.getElementById("edit-titre-provisoire").addEventListener("change", e => onFieldEdit("titreProvisoire", e.target.checked));
@@ -995,6 +1095,8 @@ function init() {
   });
 
   window.addEventListener("resize", debounce(() => { if (currentBuffer) drawWaveform(); }, 150));
+
+  updateSpeedButtons();
 
   loadTracks().then(() => {
     refreshFilterOptions();

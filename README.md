@@ -90,17 +90,43 @@ dans le `localStorage` du navigateur, donc rien n'est perdu si tu rafraîchis la
 mais ça reste local à ce navigateur/cet ordinateur tant que tu n'as pas exporté et
 committé `tracks.json`.
 
+## Interface : liste et lecteur
+
+L'appli a deux vues, à toute taille d'écran (téléphone comme ordinateur) : une vue
+**liste** (filtres en haut — Groupe, Rythme, Origine, En commun avec, Niveau, et la case
+« Titres à déf. » pour n'afficher que les titres provisoires — puis la liste des
+morceaux, avec un résumé type/tonalité/groupe/niveau) et une vue **lecteur**, qui
+s'ouvre en tapant sur un morceau. Le bouton « ← Retour » en haut du lecteur revient à
+la liste. Les boutons sont volontairement grands pour rester faciles à toucher au doigt
+sur le terrain.
+
+Dans la vue lecteur, taper/cliquer sur la forme d'onde lance la lecture depuis cet
+endroit — pas besoin d'ouvrir quoi que ce soit pour ça. Le lien **« ✎ Edit »** déplie
+un panneau (à côté sur grand écran, en dessous sur petit écran) avec tous les réglages
+détaillés du morceau : type, tonalité, groupe, notes, et les points de boucle. C'est
+uniquement dans ce panneau ouvert que glisser sur la forme d'onde redéfinit la boucle
+(voir plus bas) — repliée, la forme d'onde ne sert qu'à naviguer dans le morceau.
+
+Niveaux de maîtrise disponibles (`niveau`) : à apprendre, **à bosser**, en cours,
+maîtrisé.
+
 ## Le lecteur et la boucle
 
 Le morceau est décodé avec la Web Audio API, ce qui permet une boucle **sans coupure**
 (contrairement à la balise `<audio loop>`, qui laisse souvent un petit silence audible
-à chaque tour avec des mp3). Pour définir la portion à boucler :
+à chaque tour avec des mp3). Pour définir la portion à boucler, ouvre d'abord le panneau
+« ✎ Edit », puis :
 
-- fais glisser la souris sur la forme d'onde pour sélectionner une zone (elle
-  s'applique immédiatement), ou
+- fais glisser sur la forme d'onde pour sélectionner une zone (elle s'applique
+  immédiatement), ou
 - lance la lecture, clique sur « Définir ici » à l'endroit voulu pour le début et la
   fin, ou
 - tape les secondes directement dans les champs.
+
+Un sélecteur de vitesse (1× / 0.75× / 0.5×) à côté du bouton Lecture permet de
+ralentir un passage pour le travailler — à noter que, comme le site ne fait pas de
+correction de hauteur, ralentir baisse aussi légèrement la tonalité (comme un vinyle
+ralenti).
 
 Décoche « Boucle » pour lire le morceau en entier sans boucler, ou clique
 « Boucle = morceau entier » pour effacer la sélection.

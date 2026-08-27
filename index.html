@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Répertoire accordéon</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪗</text></svg>">
 <link rel="stylesheet" href="style.css">
@@ -22,47 +22,51 @@
 <div class="app-body">
 
   <aside class="sidebar">
-    <div class="filter-group">
-      <label for="filter-type">Type de danse</label>
-      <select id="filter-type">
-        <option value="">Tous</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="filter-groupe">Groupe</label>
-      <select id="filter-groupe">
-        <option value="">Tous</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="filter-categorie">Catégorie / origine</label>
-      <select id="filter-categorie">
-        <option value="">Toutes</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="filter-niveau">Niveau</label>
-      <select id="filter-niveau">
-        <option value="">Tous</option>
-        <option value="a-apprendre">À apprendre</option>
-        <option value="en-cours">En cours</option>
-        <option value="maitrise">Maîtrisé</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label for="filter-musicien">Répertoire en commun avec</label>
-      <select id="filter-musicien">
-        <option value="">Tout le monde</option>
-      </select>
-    </div>
-    <div class="filter-group">
-      <label class="checkbox-filter">
-        <input type="checkbox" id="filter-titre-provisoire">
-        Titres à confirmer uniquement
-      </label>
+    <div class="sidebar-filters">
+      <div class="filter-group">
+        <label for="filter-groupe">Groupe</label>
+        <select id="filter-groupe">
+          <option value="">Tous</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-type">Rythme</label>
+        <select id="filter-type">
+          <option value="">Tous</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-categorie">Origine</label>
+        <select id="filter-categorie">
+          <option value="">Toutes</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-musicien">En commun avec</label>
+        <select id="filter-musicien">
+          <option value="">Tout le monde</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label for="filter-niveau">Niveau</label>
+        <select id="filter-niveau">
+          <option value="">Tous</option>
+          <option value="a-apprendre">À apprendre</option>
+          <option value="a-bosser">À bosser</option>
+          <option value="en-cours">En cours</option>
+          <option value="maitrise">Maîtrisé</option>
+        </select>
+      </div>
+      <div class="filter-group checkbox-filter-group">
+        <label class="checkbox-filter">
+          <input type="checkbox" id="filter-titre-provisoire">
+          Titres à déf.
+        </label>
+      </div>
     </div>
 
-    <div class="filter-group musiciens-panel">
+    <button type="button" id="toggle-musiciens-btn" class="btn btn-small">🎻 Gérer les musiciens</button>
+    <div class="filter-group musiciens-panel hidden" id="musiciens-panel">
       <label>Musiciens connus</label>
       <div class="musicien-add-row">
         <input type="text" id="musicien-input" placeholder="Nom du musicien">
@@ -83,162 +87,178 @@
     </div>
 
     <div class="player-content hidden" id="player-content">
-      <div class="player-top">
-        <input type="text" id="edit-titre" class="title-input" placeholder="Titre du morceau">
-        <label class="titre-provisoire-toggle" title="À cocher si c'est un titre provisoire, à confirmer plus tard">
-          <input type="checkbox" id="edit-titre-provisoire">
-          Titre&nbsp;?
-        </label>
-        <button id="delete-track-btn" class="btn btn-danger" title="Supprimer ce morceau">🗑</button>
-      </div>
+      <div class="player-main">
+        <div class="player-top">
+          <button type="button" id="back-to-list-btn" class="btn btn-small back-btn" title="Retour à la liste">← Retour</button>
+          <input type="text" id="edit-titre" class="title-input" placeholder="Titre du morceau">
+          <label class="titre-provisoire-toggle" title="À cocher si c'est un titre provisoire, à confirmer plus tard">
+            <input type="checkbox" id="edit-titre-provisoire">
+            Titre&nbsp;?
+          </label>
+        </div>
 
-      <div class="waveform-wrap">
-        <canvas id="waveform" height="120"></canvas>
-        <div id="waveform-status" class="waveform-status"></div>
-      </div>
+        <div class="waveform-wrap">
+          <canvas id="waveform" height="120"></canvas>
+          <div id="waveform-status" class="waveform-status"></div>
+        </div>
 
-      <div class="transport">
-        <button id="play-btn" class="btn btn-play">▶ Lecture</button>
-        <label class="loop-toggle">
-          <input type="checkbox" id="loop-checkbox" checked>
-          Boucle
-        </label>
-        <span class="time-display"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
-      </div>
-
-      <div class="loop-controls">
-        <div class="loop-field">
-          <label for="loop-start">Début boucle (s)</label>
-          <div class="loop-input-row">
-            <input type="number" id="loop-start" step="0.01" min="0" placeholder="début">
-            <button class="btn btn-small" id="set-loop-start">Définir ici</button>
+        <div class="transport">
+          <button id="play-btn" class="btn btn-play">▶ Lecture</button>
+          <label class="loop-toggle">
+            <input type="checkbox" id="loop-checkbox" checked>
+            Boucle
+          </label>
+          <div class="speed-control" role="group" aria-label="Vitesse de lecture">
+            <button type="button" class="btn btn-small speed-btn" data-rate="1">1×</button>
+            <button type="button" class="btn btn-small speed-btn" data-rate="0.75">0.75×</button>
+            <button type="button" class="btn btn-small speed-btn" data-rate="0.5">0.5×</button>
           </div>
-        </div>
-        <div class="loop-field">
-          <label for="loop-end">Fin boucle (s)</label>
-          <div class="loop-input-row">
-            <input type="number" id="loop-end" step="0.01" min="0" placeholder="fin">
-            <button class="btn btn-small" id="set-loop-end">Définir ici</button>
-          </div>
-        </div>
-        <button class="btn btn-small btn-secondary" id="clear-loop">Boucle = morceau entier</button>
-      </div>
-
-      <div class="metadata-form">
-        <div class="field">
-          <label for="edit-type">Type de danse / rythme</label>
-          <select id="edit-type">
-            <optgroup label="Trad français">
-              <option value="valse">Valse</option>
-              <option value="valse-5-temps">Valse à 5 temps</option>
-              <option value="mazurka">Mazurka</option>
-              <option value="scottish">Scottish</option>
-              <option value="bourree-2-temps">Bourrée à 2 temps</option>
-              <option value="bourree-3-temps">Bourrée à 3 temps</option>
-              <option value="polka">Polka</option>
-              <option value="an-dro">An dro</option>
-              <option value="hanter-dro">Hanter dro</option>
-              <option value="rond">Rond (de Loudéac, Saint-Vincent…)</option>
-              <option value="plinn">Plinn</option>
-              <option value="gavotte">Gavotte</option>
-              <option value="laride">Laridé</option>
-              <option value="marche">Marche</option>
-              <option value="chapelloise">Chapelloise</option>
-              <option value="cercle">Cercle circassien</option>
-            </optgroup>
-            <optgroup label="Irish">
-              <option value="reel">Reel</option>
-              <option value="jig">Jig (gigue)</option>
-              <option value="slip-jig">Slip jig</option>
-              <option value="slide">Slide</option>
-              <option value="barndance">Barndance</option>
-              <option value="hornpipe">Hornpipe</option>
-              <option value="air">Air (lent)</option>
-            </optgroup>
-            <optgroup label="Autres mesures">
-              <option value="sept-temps">7 temps</option>
-              <option value="hora">Hora</option>
-            </optgroup>
-            <option value="autre">Autre</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="edit-categorie">Catégorie / origine</label>
-          <select id="edit-categorie">
-            <option value="">—</option>
-            <option value="irish">Irish</option>
-            <option value="morvan">Morvan</option>
-            <option value="auvergne">Auvergne</option>
-            <option value="pays-de-l-est">Pays de l'Est</option>
-            <option value="breton">Breton</option>
-            <option value="ecosse">Écosse</option>
-            <option value="angleterre">Angleterre</option>
-            <option value="autre">Autre</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="edit-tonique-note">Tonalité — note</label>
-          <select id="edit-tonique-note">
-            <option value="">—</option>
-            <option value="do">Do</option>
-            <option value="do-diese">Do♯</option>
-            <option value="re">Ré</option>
-            <option value="re-diese">Ré♯</option>
-            <option value="mi">Mi</option>
-            <option value="fa">Fa</option>
-            <option value="fa-diese">Fa♯</option>
-            <option value="sol">Sol</option>
-            <option value="sol-diese">Sol♯</option>
-            <option value="la">La</option>
-            <option value="la-diese">La♯</option>
-            <option value="si">Si</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="edit-tonique-mode">Tonalité — mode</label>
-          <select id="edit-tonique-mode">
-            <option value="">—</option>
-            <option value="majeur">Majeur</option>
-            <option value="mineur">Mineur</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="edit-niveau">Niveau</label>
-          <select id="edit-niveau">
-            <option value="a-apprendre">À apprendre</option>
-            <option value="en-cours">En cours</option>
-            <option value="maitrise">Maîtrisé</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="edit-groupe">Groupe</label>
-          <input type="text" id="edit-groupe" list="groupe-datalist" placeholder="Trad, ou nom du groupe">
-          <datalist id="groupe-datalist"></datalist>
-        </div>
-        <div class="field field-wide">
-          <label for="edit-source">Source / collectage</label>
-          <input type="text" id="edit-source" placeholder="ex. collecté auprès de…, appris au stage de…">
-        </div>
-        <div class="field field-wide">
-          <label>Joué aussi par</label>
-          <div id="edit-joueavec" class="joueavec-checkboxes">
-            <span class="joueavec-empty">Ajoute des musiciens dans la colonne de gauche pour pouvoir les cocher ici.</span>
-          </div>
-        </div>
-        <div class="field field-wide">
-          <label for="edit-notes">Notes</label>
-          <textarea id="edit-notes" rows="3" placeholder="Repères, doigtés, ce qui coince…"></textarea>
-        </div>
-        <div class="field field-wide">
-          <label for="edit-fichier">Fichier audio (chemin relatif dans le dépôt, une fois déployé)</label>
-          <input type="text" id="edit-fichier" placeholder="audio/mon-morceau.mp3">
+          <span class="time-display"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
         </div>
       </div>
 
-      <div class="json-snippet-wrap hidden" id="json-snippet-wrap">
-        <p>Ce morceau n'a été ajouté qu'en local (aperçu navigateur). Pour le rendre permanent : copie le fichier audio dans <code>audio/</code>, puis ajoute ce bloc dans <code>data/tracks.json</code> (ou clique simplement sur « Exporter tracks.json » en haut, qui régénère le fichier complet).</p>
-        <textarea id="json-snippet" readonly rows="6"></textarea>
-      </div>
+      <details class="edit-section" id="edit-section">
+        <summary class="edit-summary">✎ Edit</summary>
+
+        <div class="edit-section-body">
+          <div class="loop-controls">
+            <div class="loop-field">
+              <label for="loop-start">Début boucle (s)</label>
+              <div class="loop-input-row">
+                <input type="number" id="loop-start" step="0.01" min="0" placeholder="début">
+                <button class="btn btn-small" id="set-loop-start">Définir ici</button>
+              </div>
+            </div>
+            <div class="loop-field">
+              <label for="loop-end">Fin boucle (s)</label>
+              <div class="loop-input-row">
+                <input type="number" id="loop-end" step="0.01" min="0" placeholder="fin">
+                <button class="btn btn-small" id="set-loop-end">Définir ici</button>
+              </div>
+            </div>
+            <button class="btn btn-small btn-secondary" id="clear-loop">Boucle = morceau entier</button>
+          </div>
+
+          <div class="metadata-form">
+            <div class="field">
+              <label for="edit-type">Type de danse / rythme</label>
+              <select id="edit-type">
+                <optgroup label="Trad français">
+                  <option value="valse">Valse</option>
+                  <option value="valse-5-temps">Valse à 5 temps</option>
+                  <option value="mazurka">Mazurka</option>
+                  <option value="scottish">Scottish</option>
+                  <option value="bourree-2-temps">Bourrée à 2 temps</option>
+                  <option value="bourree-3-temps">Bourrée à 3 temps</option>
+                  <option value="polka">Polka</option>
+                  <option value="an-dro">An dro</option>
+                  <option value="hanter-dro">Hanter dro</option>
+                  <option value="rond">Rond (de Loudéac, Saint-Vincent…)</option>
+                  <option value="plinn">Plinn</option>
+                  <option value="gavotte">Gavotte</option>
+                  <option value="laride">Laridé</option>
+                  <option value="marche">Marche</option>
+                  <option value="chapelloise">Chapelloise</option>
+                  <option value="cercle">Cercle circassien</option>
+                </optgroup>
+                <optgroup label="Irish">
+                  <option value="reel">Reel</option>
+                  <option value="jig">Jig (gigue)</option>
+                  <option value="slip-jig">Slip jig</option>
+                  <option value="slide">Slide</option>
+                  <option value="barndance">Barndance</option>
+                  <option value="hornpipe">Hornpipe</option>
+                  <option value="air">Air (lent)</option>
+                </optgroup>
+                <optgroup label="Autres mesures">
+                  <option value="sept-temps">7 temps</option>
+                  <option value="hora">Hora</option>
+                </optgroup>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="edit-categorie">Catégorie / origine</label>
+              <select id="edit-categorie">
+                <option value="">—</option>
+                <option value="irish">Irish</option>
+                <option value="morvan">Morvan</option>
+                <option value="auvergne">Auvergne</option>
+                <option value="pays-de-l-est">Pays de l'Est</option>
+                <option value="breton">Breton</option>
+                <option value="ecosse">Écosse</option>
+                <option value="angleterre">Angleterre</option>
+                <option value="autre">Autre</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="edit-tonique-note">Tonalité — note</label>
+              <select id="edit-tonique-note">
+                <option value="">—</option>
+                <option value="do">Do</option>
+                <option value="do-diese">Do♯</option>
+                <option value="re">Ré</option>
+                <option value="re-diese">Ré♯</option>
+                <option value="mi">Mi</option>
+                <option value="fa">Fa</option>
+                <option value="fa-diese">Fa♯</option>
+                <option value="sol">Sol</option>
+                <option value="sol-diese">Sol♯</option>
+                <option value="la">La</option>
+                <option value="la-diese">La♯</option>
+                <option value="si">Si</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="edit-tonique-mode">Tonalité — mode</label>
+              <select id="edit-tonique-mode">
+                <option value="">—</option>
+                <option value="majeur">Majeur</option>
+                <option value="mineur">Mineur</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="edit-niveau">Niveau</label>
+              <select id="edit-niveau">
+                <option value="a-apprendre">À apprendre</option>
+                <option value="a-bosser">À bosser</option>
+                <option value="en-cours">En cours</option>
+                <option value="maitrise">Maîtrisé</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="edit-groupe">Groupe</label>
+              <input type="text" id="edit-groupe" list="groupe-datalist" placeholder="Trad, ou nom du groupe">
+              <datalist id="groupe-datalist"></datalist>
+            </div>
+            <div class="field field-wide">
+              <label for="edit-source">Source / collectage</label>
+              <input type="text" id="edit-source" placeholder="ex. collecté auprès de…, appris au stage de…">
+            </div>
+            <div class="field field-wide">
+              <label>Joué aussi par</label>
+              <div id="edit-joueavec" class="joueavec-checkboxes">
+                <span class="joueavec-empty">Ajoute des musiciens dans la colonne de gauche pour pouvoir les cocher ici.</span>
+              </div>
+            </div>
+            <div class="field field-wide">
+              <label for="edit-notes">Notes</label>
+              <textarea id="edit-notes" rows="3" placeholder="Repères, doigtés, ce qui coince…"></textarea>
+            </div>
+            <div class="field field-wide">
+              <label for="edit-fichier">Fichier audio (chemin relatif dans le dépôt, une fois déployé)</label>
+              <input type="text" id="edit-fichier" placeholder="audio/mon-morceau.mp3">
+            </div>
+          </div>
+
+          <div class="json-snippet-wrap hidden" id="json-snippet-wrap">
+            <p>Ce morceau n'a été ajouté qu'en local (aperçu navigateur). Pour le rendre permanent : copie le fichier audio dans <code>audio/</code>, puis ajoute ce bloc dans <code>data/tracks.json</code> (ou clique simplement sur « Exporter tracks.json » en haut, qui régénère le fichier complet).</p>
+            <textarea id="json-snippet" readonly rows="6"></textarea>
+          </div>
+
+          <button type="button" id="delete-track-btn" class="btn btn-danger" title="Supprimer ce morceau">🗑 Supprimer ce morceau</button>
+        </div>
+      </details>
     </div>
   </main>
 
