@@ -123,11 +123,6 @@ Le morceau est décodé avec la Web Audio API, ce qui permet une boucle **sans c
   fin, ou
 - tape les secondes directement dans les champs.
 
-Un sélecteur de vitesse (1× / 0.75× / 0.5×) à côté du bouton Lecture permet de
-ralentir un passage pour le travailler — à noter que, comme le site ne fait pas de
-correction de hauteur, ralentir baisse aussi légèrement la tonalité (comme un vinyle
-ralenti).
-
 Décoche « Boucle » pour lire le morceau en entier sans boucler, ou clique
 « Boucle = morceau entier » pour effacer la sélection.
 
@@ -166,6 +161,7 @@ la marche à suivre.
 
 - Export/import complet (avec l'audio) en un seul fichier `.zip`, pour transférer sa
   bibliothèque locale d'un ordinateur à l'autre.
-- Réglage de la vitesse de lecture (`playbackRate`) pour travailler un morceau
-  ralenti.
+- Ralenti sans changement de tonalité : testé avec un simple `playbackRate`, abandonné
+  car ça déforme trop le son (comme un vinyle ralenti). Faisable proprement avec une
+  librairie de time-stretch (ex. SoundTouchJS), mais plus lourd à intégrer.
 - Vue "playlist de bal" : sélectionner plusieurs morceaux et les enchaîner.

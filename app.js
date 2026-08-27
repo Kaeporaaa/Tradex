@@ -82,7 +82,6 @@ let pausedOffset = 0;
 let rafId = null;
 let peaksCache = null; // Float32Array de pics min/max pour le morceau chargé
 let dragState = null;  // { startX, startTime, moved, lastX } pendant un drag/tap sur la waveform
-let playbackRate = 1;  // vitesse de lecture courante (1, 0.75, 0.5)
 
 /* ---------- Petits utilitaires localStorage ---------- */
 
@@ -463,10 +462,8 @@ async function selectTrack(id) {
   document.getElementById("player-content").classList.remove("hidden");
   showPlayerView();
 
-  // Nouveau morceau : on repart en vue "lecteur", section Edit repliée, vitesse normale.
+  // Nouveau morceau : on repart en vue "lecteur", section Edit repliée.
   document.getElementById("edit-section").open = false;
-  playbackRate = 1;
-  updateSpeedButtons();
 
   fillEditForm(t);
   updateJsonSnippet(t);
@@ -749,9 +746,7 @@ function effectiveLoopRange(t) {
 function computeCurrentPosition() {
   if (!currentBuffer) return 0;
   if (!isPlaying) return pausedOffset;
-  // elapsed est exprimé en temps "buffer" (position dans le morceau), pas en temps réel écoulé :
-  // à vitesse 0.5x, une seconde réelle ne fait avancer la lecture que d'une demi-seconde dans le morceau.
-  const elapsed = (audioCtx.currentTime - playStartContextTime) * playbackRate;
+  const elapsed = audioCtx.currentTime - playStartContextTime;
   const looping = document.getElementById("loop-checkbox").checked;
   const t = currentTrack();
   if (!looping) {
@@ -770,7 +765,6 @@ function startPlayback(offset) {
   const t = currentTrack();
   const node = audioCtx.createBufferSource();
   node.buffer = currentBuffer;
-  node.playbackRate.value = playbackRate;
   const looping = document.getElementById("loop-checkbox").checked;
   if (looping) {
     const { start, end } = effectiveLoopRange(t);
@@ -851,25 +845,6 @@ function seekAndPlay(time) {
   if (audioCtx.state === "suspended") audioCtx.resume();
   stopCurrentNode();
   startPlayback(pausedOffset);
-}
-
-function setPlaybackRate(rate) {
-  if (isPlaying) {
-    const pos = computeCurrentPosition(); // calculé avec l'ancienne vitesse
-    playbackRate = rate;
-    stopCurrentNode();
-    startPlayback(pos);
-  } else {
-    playbackRate = rate;
-  }
-  updateSpeedButtons();
-}
-
-function updateSpeedButtons() {
-  document.querySelectorAll(".speed-btn").forEach(btn => {
-    const active = parseFloat(btn.dataset.rate) === playbackRate;
-    btn.classList.toggle("active", active);
-  });
 }
 
 function restartIfPlaying() {
@@ -1035,9 +1010,6 @@ function init() {
 
   document.getElementById("play-btn").addEventListener("click", togglePlay);
   document.getElementById("loop-checkbox").addEventListener("change", restartIfPlaying);
-  document.querySelectorAll(".speed-btn").forEach(btn => {
-    btn.addEventListener("click", () => setPlaybackRate(parseFloat(btn.dataset.rate)));
-  });
 
   document.getElementById("back-to-list-btn").addEventListener("click", () => {
     stopPlayback();
@@ -1095,8 +1067,6 @@ function init() {
   });
 
   window.addEventListener("resize", debounce(() => { if (currentBuffer) drawWaveform(); }, 150));
-
-  updateSpeedButtons();
 
   loadTracks().then(() => {
     refreshFilterOptions();
