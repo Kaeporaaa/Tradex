@@ -20,6 +20,7 @@ const DANCE_LABELS = {
   "chapelloise": "Chapelloise",
   "cercle": "Cercle circassien",
   "sept-temps": "7 temps",
+  "hora": "Hora",
   "reel": "Reel",
   "jig": "Jig (gigue)",
   "slip-jig": "Slip jig",
