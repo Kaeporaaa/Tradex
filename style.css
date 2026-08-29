@@ -317,6 +317,35 @@ body.view-player .player-panel { display: block; }
 .loop-toggle input { width: 18px; height: 18px; }
 .time-display { color: var(--text-dim); font-variant-numeric: tabular-nums; margin-left: auto; font-size: 0.95rem; }
 
+/* ---------- Résumé des infos du morceau (lecture seule) ---------- */
+
+.track-info-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px 18px;
+  padding: 14px 16px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 4px;
+}
+.info-item-wide { grid-column: 1 / -1; }
+.info-label {
+  display: block;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-dim);
+  margin-bottom: 2px;
+}
+.info-value {
+  display: block;
+  font-size: 0.95rem;
+  color: var(--text);
+  word-break: break-word;
+  white-space: pre-line;
+}
+
 /* ---------- Section "Edit" : repliée par défaut ---------- */
 
 .edit-section {

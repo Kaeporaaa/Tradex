@@ -108,6 +108,12 @@ le fichier s'ouvre d'abord dans le lecteur audio du navigateur ; utilise ensuite
 bouton de partage pour l'enregistrer dans l'appli Fichiers si tu veux le garder en
 dehors du navigateur.
 
+Juste en dessous des boutons de lecture, un encart affiche en lecture seule toutes
+les infos du morceau (rythme, origine, tonalité, groupe, niveau, source, joué avec,
+notes) — pratique pour un coup d'œil rapide sans rien pouvoir modifier par erreur.
+Pour changer une de ces valeurs, il faut ouvrir le panneau « ✎ Edit » ; l'encart se
+met à jour tout seul dès que tu modifies un champ dedans.
+
 Le lien **« ✎ Edit »** déplie
 un panneau (à côté sur grand écran, en dessous sur petit écran) avec tous les réglages
 détaillés du morceau : type, tonalité, groupe, notes, et les points de boucle. C'est

@@ -476,6 +476,40 @@ function escapeHtml(s) {
   }[c]));
 }
 
+/* ---------- Récupération robuste d'un fichier audio ---------- */
+
+// Certains fichiers audio ont un nom accentué stocké dans une forme Unicode
+// (NFC ou NFD) différente de celle enregistrée dans tracks.json — fréquent
+// avec des bibliothèques créées sous macOS. Si la requête directe échoue,
+// on retente avec les variantes normalisées avant d'abandonner.
+async function fetchAudioSmart(fichier) {
+  let res;
+  try {
+    res = await fetch(fichier, { cache: "no-store" });
+  } catch (e) {
+    res = null;
+  }
+  if (res && res.ok) return res;
+
+  const variants = new Set();
+  if (typeof fichier.normalize === "function") {
+    variants.add(fichier.normalize("NFC"));
+    variants.add(fichier.normalize("NFD"));
+  }
+  variants.delete(fichier);
+
+  for (const variant of variants) {
+    try {
+      const r2 = await fetch(variant, { cache: "no-store" });
+      if (r2.ok) return r2;
+    } catch (e) {
+      // on tente la variante suivante
+    }
+  }
+
+  throw new Error("HTTP " + (res ? res.status : "?"));
+}
+
 /* ---------- Sélection d'un morceau ---------- */
 
 async function selectTrack(id) {
@@ -495,6 +529,7 @@ async function selectTrack(id) {
 
   fillEditForm(t);
   updateJsonSnippet(t);
+  updateTrackInfoSummary(t);
 
   document.getElementById("waveform-status").textContent = "Chargement…";
   document.getElementById("time-current").textContent = "0:00";
@@ -510,8 +545,7 @@ async function selectTrack(id) {
       if (!blob) throw new Error("audio local introuvable (a-t-il été effacé au rechargement de la page ?)");
       arrayBuffer = await blob.arrayBuffer();
     } else {
-      const res = await fetch(t.fichier, { cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      const res = await fetchAudioSmart(t.fichier);
       arrayBuffer = await res.arrayBuffer();
     }
     if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -558,6 +592,17 @@ function fillEditForm(t) {
   renderJoueAvecCheckboxes(t);
 }
 
+function updateTrackInfoSummary(t) {
+  document.getElementById("info-type").textContent = DANCE_LABELS[t.type] || t.type || "—";
+  document.getElementById("info-categorie").textContent = CATEGORIE_LABELS[t.categorie] || t.categorie || "—";
+  document.getElementById("info-tonique").textContent = toniqueLabel(t) || "—";
+  document.getElementById("info-groupe").textContent = t.groupe || "—";
+  document.getElementById("info-niveau").textContent = NIVEAU_LABELS[t.niveau] || t.niveau || "—";
+  document.getElementById("info-source").textContent = t.source || "—";
+  document.getElementById("info-joueavec").textContent = (t.joueAvec && t.joueAvec.length) ? t.joueAvec.join(", ") : "—";
+  document.getElementById("info-notes").textContent = t.notes || "—";
+}
+
 function renderJoueAvecCheckboxes(t) {
   const container = document.getElementById("edit-joueavec");
   if (musiciens.length === 0) {
@@ -586,6 +631,7 @@ function onFieldEdit(field, value) {
   renderList();
   if (field === "type" || field === "categorie" || field === "groupe" || field === "toniqueNote" || field === "toniqueMode") refreshFilterOptions();
   updateJsonSnippet(t);
+  updateTrackInfoSummary(t);
   if (field === "loopDebut" || field === "loopFin") drawWaveform();
 }
 
@@ -595,6 +641,7 @@ function onJoueAvecChange(track) {
   track.joueAvec = checked;
   setOverride(track.id, { joueAvec: checked });
   updateJsonSnippet(track);
+  updateTrackInfoSummary(track);
   renderList();
 }
 
@@ -919,8 +966,7 @@ async function downloadCurrentTrack() {
       blob = await getBlob(t.id);
       if (!blob) throw new Error("audio local introuvable (a-t-il été effacé au rechargement de la page ?)");
     } else {
-      const res = await fetch(t.fichier, { cache: "no-store" });
-      if (!res.ok) throw new Error("HTTP " + res.status);
+      const res = await fetchAudioSmart(t.fichier);
       blob = await res.blob();
     }
     const ext = (t.fichier.match(/\.[a-z0-9]+$/i) || [".mp3"])[0];
