@@ -88,7 +88,7 @@
     },
     {
       "id": "033-albitzur-fandango-la-m",
-      "titre": "Albitzur",
+      "titre": "Albitzur ",
       "titreProvisoire": false,
       "fichier": "audio/033 - Albitzur - Fandango - La m.mp3",
       "type": "autre",
@@ -312,7 +312,7 @@
     },
     {
       "id": "043-beatrix-reel-version-jean-leo",
-      "titre": "Beatrix reel",
+      "titre": "Beatrix reel ",
       "titreProvisoire": false,
       "fichier": "audio/043 - beatrix reel - version jean leo.mp3",
       "type": "reel",
@@ -340,7 +340,7 @@
     },
     {
       "id": "231-beoga-bill-harts-re-min",
-      "titre": "Bill harts",
+      "titre": "Bill harts ",
       "titreProvisoire": false,
       "fichier": "audio/231 - beoga -bill harts - re min.mp3",
       "type": "reel",
@@ -416,8 +416,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.4,
+      "loopFin": 30.45
     },
     {
       "id": "190-ulysse-blinded-banjoist",
@@ -433,12 +433,12 @@
       "niveau": "maitrise",
       "notes": "Jouée et transmise par Ulysse Herbach, mais pas de sa composition",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.14,
+      "loopFin": 43.91
     },
     {
       "id": "244-flook-blue-ball-si-min",
-      "titre": "Blue Ball",
+      "titre": "Blue Ball ",
       "titreProvisoire": false,
       "fichier": "audio/244 - flook - blue ball - si min.mp3",
       "type": "autre",
@@ -609,7 +609,7 @@
     },
     {
       "id": "029-beoga-boxy-set-1-sol",
-      "titre": "Boxy Set 1",
+      "titre": "Boxy Set 1 ",
       "titreProvisoire": false,
       "fichier": "audio/029 - beoga - Boxy Set 1 - sol.mp3",
       "type": "reel",
@@ -630,7 +630,7 @@
     },
     {
       "id": "271-beoga-boxy-set-2-sol",
-      "titre": "Boxy Set 2",
+      "titre": "Boxy Set 2 ",
       "titreProvisoire": false,
       "fichier": "audio/271 - beoga - Boxy Set 2 - sol.mp3",
       "type": "reel",
@@ -661,8 +661,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.33,
+      "loopFin": 36.71
     },
     {
       "id": "144-pablo-golder-c-pas-clair-la-min",
@@ -729,8 +729,8 @@
       "niveau": "maitrise",
       "notes": "Tonique en attente, à rejouer pour confirmer",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 68.14
     },
     {
       "id": "197-castle-kelly",
@@ -746,8 +746,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.02,
+      "loopFin": 36.61
     },
     {
       "id": "116-catharsis-moche-solm",
@@ -763,8 +763,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.02,
+      "loopFin": 35.08
     },
     {
       "id": "124-ceg",
@@ -780,8 +780,8 @@
       "niveau": "maitrise",
       "notes": "Do-Mi-Sol",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 73.47
     },
     {
       "id": "092-gmes-14-ceux-qui-s-en-vont",
@@ -790,7 +790,7 @@
       "fichier": "audio/092 - gmes - 14 -ceux qui s_en vont.mp3",
       "type": "valse",
       "categorie": "autre",
-      "toniqueNote": "sol",
+      "toniqueNote": "do",
       "toniqueMode": "mineur",
       "groupe": "Grands-Mères et Soufflets",
       "source": "",
@@ -805,7 +805,7 @@
       "titre": "Charlie",
       "titreProvisoire": false,
       "fichier": "audio/166 - cutting - charlie - sol.mp3",
-      "type": "valse",
+      "type": "hanter-dro",
       "categorie": "",
       "toniqueNote": "sol",
       "toniqueMode": "",
@@ -814,8 +814,8 @@
       "niveau": "maitrise",
       "notes": "S'enchaîne avec \"Come Back\"",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 67.59
     },
     {
       "id": "251-solas-chris-droneys-fa-min",
@@ -831,8 +831,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 28.7
     },
     {
       "id": "060-cutting-christy-barry-s-sol",
@@ -848,8 +848,8 @@
       "niveau": "maitrise",
       "notes": "Titre et type (jig irlandaise, du répertoire du flûtiste Christy Barry) confirmés — souvent enchaînée avec \"Heidi Hendi\" par Andy Cutting (enregistrement de 1996).",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 2.04,
+      "loopFin": 35.9
     },
     {
       "id": "028-refut-cleveland-park-re-m",
@@ -1193,7 +1193,7 @@
     },
     {
       "id": "005-desaunay-dimanche-matin-la-min",
-      "titre": "Dimanche Matin",
+      "titre": "Dimanche Matin ",
       "titreProvisoire": false,
       "fichier": "audio/005 - desaunay - dimanche matin - La min.mp3",
       "type": "valse",
@@ -1377,7 +1377,7 @@
     },
     {
       "id": "229-beoga-eat-the-crust-la-min",
-      "titre": "Eat the Crust",
+      "titre": "Eat the Crust ",
       "titreProvisoire": false,
       "fichier": "audio/229 - beoga - eat the crust - la min.mp3",
       "type": "slip-jig",
@@ -1491,7 +1491,7 @@
     },
     {
       "id": "227-beoga-exploding-bow-1-si-min",
-      "titre": "Exploding Bow 1",
+      "titre": "Exploding Bow 1 ",
       "titreProvisoire": false,
       "fichier": "audio/227 - beoga - Exploding Bow 1 - Si min.mp3",
       "type": "jig",
@@ -1586,7 +1586,7 @@
     },
     {
       "id": "230-beoga-flamin-factory-sol-min",
-      "titre": "Flamin Factory",
+      "titre": "Flamin Factory ",
       "titreProvisoire": false,
       "fichier": "audio/230 - beoga - flamin factory - sol min.mp3",
       "type": "jig",
@@ -1673,7 +1673,7 @@
     },
     {
       "id": "052-beoga-funk-in-class-1-re-min",
-      "titre": "Funk in class 1",
+      "titre": "Funk in class 1 ",
       "titreProvisoire": false,
       "fichier": "audio/052 - beoga - Funk in class 1 - re min.mp3",
       "type": "scottish",
@@ -2054,7 +2054,7 @@
     },
     {
       "id": "086-beoga-inver-bank-2-si-min",
-      "titre": "Inver Bank 2",
+      "titre": "Inver Bank 2 ",
       "titreProvisoire": false,
       "fichier": "audio/086 - beoga - inver bank 2 - Si min.mp3",
       "type": "jig",
@@ -2957,7 +2957,7 @@
     },
     {
       "id": "272-beoga-madness-la-m",
-      "titre": "Madness",
+      "titre": "Madness ",
       "titreProvisoire": false,
       "fichier": "audio/272 - beoga - Madness - La m.mp3",
       "type": "jig",
@@ -3734,7 +3734,7 @@
     },
     {
       "id": "224-beoga-prelude-polkas-1-si-min",
-      "titre": "Prelude Polkas 1",
+      "titre": "Prelude Polkas 1 ",
       "titreProvisoire": false,
       "fichier": "audio/224 - beoga - Prelude Polkas 1 - si min.mp3",
       "type": "polka",
