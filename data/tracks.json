@@ -169,7 +169,7 @@
       "groupe": "Naragonia",
       "source": "",
       "niveau": "maitrise",
-      "notes": "",
+      "notes": "Joué à la flûte sur l'album.",
       "joueAvec": [],
       "loopDebut": null,
       "loopFin": null
@@ -450,8 +450,8 @@
       "niveau": "maitrise",
       "notes": "Type de danse non confirmé indépendamment",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.1,
+      "loopFin": 27.52
     },
     {
       "id": "210-beoga-blue-eyes-re-min",
@@ -553,8 +553,8 @@
       "niveau": "maitrise",
       "notes": "Titre exact non identifié",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.23,
+      "loopFin": 26.23
     },
     {
       "id": "326-refut-bourrees-3t-2",
@@ -570,8 +570,8 @@
       "niveau": "maitrise",
       "notes": "Titre exact non identifié",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.09,
+      "loopFin": 26.42
     },
     {
       "id": "327-refut-bourrees-3t-3",
@@ -587,8 +587,8 @@
       "niveau": "maitrise",
       "notes": "Titre exact non identifié",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 25.77
     },
     {
       "id": "113-solas-box-reel-2-mi-m",
@@ -625,8 +625,8 @@
         "Jean",
         "Pierrot"
       ],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 30.5
     },
     {
       "id": "271-beoga-boxy-set-2-sol",
@@ -2488,6 +2488,31 @@
       "loopFin": 35.73
     },
     {
+      "id": "003-la-mal-aimable-mta52ek2tmqg",
+      "titre": "La mal Aimable",
+      "titreProvisoire": false,
+      "fichier": "audio/003 - La mal Aimable.mp3",
+      "type": "valse",
+      "categorie": "morvan",
+      "toniqueNote": "la",
+      "toniqueMode": "mineur",
+      "groupe": "Trad",
+      "source": "morvan",
+      "niveau": "maitrise",
+      "notes": "",
+      "joueAvec": [
+        "Aline",
+        "Damien",
+        "Ero-Cook",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
+      "loopDebut": 0.8,
+      "loopFin": 35.73
+    },
+    {
       "id": "168-naragonia-la-minute",
       "titre": "La Minute",
       "titreProvisoire": false,
@@ -3896,6 +3921,30 @@
       "niveau": "maitrise",
       "notes": "S'enchaîne après Cleveland Park (piste 028) ; pas de titre pour l'instant",
       "joueAvec": [],
+      "loopDebut": null,
+      "loopFin": null
+    },
+    {
+      "id": "011-refut-scottish-do-mtaki8u0fm60",
+      "titre": "refut scottish do",
+      "titreProvisoire": true,
+      "fichier": "audio/011 - refut - scottish do.mp3",
+      "type": "valse",
+      "categorie": "morvan",
+      "toniqueNote": "do",
+      "toniqueMode": "majeur",
+      "groupe": "Re-fût de Chêne",
+      "source": "",
+      "niveau": "maitrise",
+      "notes": "Majeur/mineur",
+      "joueAvec": [
+        "Aline",
+        "Ero-Cook",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
       "loopDebut": null,
       "loopFin": null
     },
@@ -5704,6 +5753,30 @@
       "joueAvec": [],
       "loopDebut": null,
       "loopFin": null
+    },
+    {
+      "id": "004-venezuela-mta56sj1nwdi",
+      "titre": "Venezuela",
+      "titreProvisoire": false,
+      "fichier": "audio/004 - Venezuela.mp3",
+      "type": "valse",
+      "categorie": "autre",
+      "toniqueNote": "la",
+      "toniqueMode": "mineur",
+      "groupe": "Trad",
+      "source": "morvan",
+      "niveau": "maitrise",
+      "notes": "Valse Venezuellienne",
+      "joueAvec": [
+        "Aline",
+        "Damien",
+        "Jean",
+        "Nina",
+        "Sam",
+        "Toncarounet"
+      ],
+      "loopDebut": 1.44,
+      "loopFin": 64.28
     },
     {
       "id": "004-venezuela-mta56sj1nwdi",
