@@ -114,11 +114,16 @@ notes) — pratique pour un coup d'œil rapide sans rien pouvoir modifier par er
 Pour changer une de ces valeurs, il faut ouvrir le panneau « ✎ Edit » ; l'encart se
 met à jour tout seul dès que tu modifies un champ dedans.
 
-Le lien **« ✎ Edit »** déplie
-un panneau (à côté sur grand écran, en dessous sur petit écran) avec tous les réglages
-détaillés du morceau : type, tonalité, groupe, notes, et les points de boucle. C'est
-uniquement dans ce panneau ouvert que glisser sur la forme d'onde redéfinit la boucle
-(voir plus bas) — repliée, la forme d'onde ne sert qu'à naviguer dans le morceau.
+Le lien **« ✎ Edit »** déplie un panneau, toujours en dessous de la forme d'onde (sur
+petit comme sur grand écran), avec tous les réglages détaillés du morceau : type,
+tonalité, groupe, notes, et les points de boucle. Sur grand écran, dès que ce panneau
+est ouvert, la forme d'onde s'agrandit (quasi pleine largeur, plus haute) pour rendre
+les clics de précision plus faciles quand tu définis les points de boucle. C'est
+uniquement panneau ouvert que glisser sur la forme d'onde redéfinit la boucle (voir
+plus bas) — repliée, la forme d'onde ne sert qu'à naviguer dans le morceau.
+
+La forme d'onde s'affiche en vert vif, et la zone de boucle est surlignée par une
+teinte verte transparente par-dessus.
 
 Niveaux de maîtrise disponibles (`niveau`) : à apprendre, **à bosser**, en cours,
 maîtrisé.

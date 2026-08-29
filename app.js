@@ -275,8 +275,24 @@ function showBanner(msg) {
 
 function rebuildMergedTracks() {
   const overrides = getOverrides();
-  const localIds = getLocalIds();
+  let localIds = getLocalIds();
   const deletedIds = getDeletedIds();
+
+  // Un morceau ajouté en local (bouton "+ Ajouter un morceau") qui a depuis
+  // été recopié en dur dans data/tracks.json (promu au dépôt officiel) ne
+  // doit plus être traité comme "local" : sinon il apparaît deux fois (la
+  // copie officielle + la copie locale), et à chaque nouvel export/push ce
+  // doublon peut se re-dupliquer encore un peu plus. On détecte et on
+  // nettoie ça automatiquement dès qu'on retrouve son id dans la base.
+  const baseIds = new Set(baseTracks.map(t => t.id));
+  const promotedIds = localIds.filter(id => baseIds.has(id));
+  if (promotedIds.length > 0) {
+    promotedIds.forEach(id => {
+      removeLocalId(id);
+      deleteBlob(id).catch(() => {});
+    });
+    localIds = getLocalIds();
+  }
 
   const fromBase = baseTracks
     .filter(t => !deletedIds.includes(t.id))
@@ -478,36 +494,48 @@ function escapeHtml(s) {
 
 /* ---------- Récupération robuste d'un fichier audio ---------- */
 
+// Encode chaque segment du chemin (entre les "/") avec encodeURIComponent.
+// Nécessaire pour les noms de fichiers contenant des caractères qui ont un
+// sens spécial dans une URL — notamment "#" (traité comme un repère de
+// fragment : tout ce qui suit est coupé de la requête), mais aussi "?", "%",
+// "&"... Un simple fetch(cheminBrut) échoue silencieusement sur ces
+// fichiers-là (ex. "Box Reel #2.mp3" devient une requête vers "Box Reel ",
+// le "2.mp3" étant traité comme un fragment d'URL).
+function encodeFichierPath(path) {
+  return path.split("/").map(encodeURIComponent).join("/");
+}
+
 // Certains fichiers audio ont un nom accentué stocké dans une forme Unicode
 // (NFC ou NFD) différente de celle enregistrée dans tracks.json — fréquent
-// avec des bibliothèques créées sous macOS. Si la requête directe échoue,
-// on retente avec les variantes normalisées avant d'abandonner.
+// avec des bibliothèques créées sous macOS. Si la requête directe échoue, on
+// retente avec les variantes normalisées, et avec les variantes correctement
+// encodées pour les caractères spéciaux d'URL, avant d'abandonner.
 async function fetchAudioSmart(fichier) {
-  let res;
-  try {
-    res = await fetch(fichier, { cache: "no-store" });
-  } catch (e) {
-    res = null;
-  }
-  if (res && res.ok) return res;
-
-  const variants = new Set();
+  const raw = [fichier];
   if (typeof fichier.normalize === "function") {
-    variants.add(fichier.normalize("NFC"));
-    variants.add(fichier.normalize("NFD"));
+    raw.push(fichier.normalize("NFC"), fichier.normalize("NFD"));
   }
-  variants.delete(fichier);
+  const attempts = [];
+  raw.forEach(variant => {
+    attempts.push(variant);
+    attempts.push(encodeFichierPath(variant));
+  });
 
-  for (const variant of variants) {
+  const seen = new Set();
+  let lastStatus = "?";
+  for (const url of attempts) {
+    if (seen.has(url)) continue;
+    seen.add(url);
     try {
-      const r2 = await fetch(variant, { cache: "no-store" });
-      if (r2.ok) return r2;
+      const res = await fetch(url, { cache: "no-store" });
+      if (res.ok) return res;
+      lastStatus = res.status;
     } catch (e) {
       // on tente la variante suivante
     }
   }
 
-  throw new Error("HTTP " + (res ? res.status : "?"));
+  throw new Error("HTTP " + lastStatus);
 }
 
 /* ---------- Sélection d'un morceau ---------- */
@@ -683,7 +711,9 @@ function drawWaveform() {
   const canvas = document.getElementById("waveform");
   const dpr = window.devicePixelRatio || 1;
   const cssWidth = canvas.parentElement.clientWidth;
-  const cssHeight = 120;
+  // Piste plus grande et plus précise à cliquer quand le panneau "Edit" est
+  // ouvert (définition des points de boucle) que pendant une simple écoute.
+  const cssHeight = isEditOpen() ? 200 : 120;
   canvas.width = cssWidth * dpr;
   canvas.height = cssHeight * dpr;
   canvas.style.width = cssWidth + "px";
@@ -694,22 +724,23 @@ function drawWaveform() {
 
   const styles = getComputedStyle(document.documentElement);
   const accent = styles.getPropertyValue("--accent").trim() || "#d98e3b";
-  const dim = styles.getPropertyValue("--border").trim() || "#444";
+  const waveColor = styles.getPropertyValue("--waveform-color").trim() || "#39ff14";
+  const loopHighlight = styles.getPropertyValue("--loop-highlight").trim() || "rgba(57, 255, 20, 0.14)";
 
   const t = currentTrack();
   const duration = currentBuffer ? currentBuffer.duration : 0;
 
-  // zone de boucle
+  // zone de boucle (surlignage transparent)
   if (t && duration > 0) {
     const start = t.loopDebut != null ? t.loopDebut : 0;
     const end = t.loopFin != null ? t.loopFin : duration;
-    ctx.fillStyle = accent + "33";
+    ctx.fillStyle = loopHighlight;
     ctx.fillRect((start / duration) * cssWidth, 0, ((end - start) / duration) * cssWidth, cssHeight);
   }
 
   if (peaksCache) {
     const mid = cssHeight / 2;
-    ctx.fillStyle = dim;
+    ctx.fillStyle = waveColor;
     const buckets = peaksCache.length / 2;
     for (let i = 0; i < buckets; i++) {
       const x = (i / buckets) * cssWidth;

@@ -9,6 +9,8 @@
   --accent-dim: #7a5326;
   --danger: #c65b5b;
   --radius: 10px;
+  --waveform-color: #39ff14;
+  --loop-highlight: rgba(57, 255, 20, 0.16);
   font-size: 16px;
 }
 
@@ -23,6 +25,8 @@
     --accent: #b5651d;
     --accent-dim: #ecd3b3;
     --danger: #a83c3c;
+    --waveform-color: #1f9d55;
+    --loop-highlight: rgba(31, 157, 85, 0.16);
   }
 }
 
@@ -467,20 +471,12 @@ body.view-player .player-panel { display: block; }
 }
 
 @media (min-width: 900px) {
+  /* Piste bien visible et facile à cliquer pour définir la boucle : quasi
+     pleine largeur d'écran quand le panneau "Edit" est ouvert, avec les
+     réglages en dessous plutôt qu'à côté (l'ancienne disposition en deux
+     volets rendait la piste trop étroite pour cliquer précisément). */
   .player-content:has(#edit-section[open]) {
-    max-width: 1160px;
-    display: grid;
-    grid-template-columns: minmax(340px, 1fr) minmax(360px, 1fr);
-    gap: 28px;
-    align-items: start;
-  }
-  .player-content:has(#edit-section[open]) .player-main { grid-column: 1; }
-  .player-content:has(#edit-section[open]) .edit-section {
-    grid-column: 2;
-    border-top: none;
-    border-left: 1px solid var(--border);
-    padding-top: 0;
-    padding-left: 24px;
+    max-width: 1600px;
   }
   .metadata-form { grid-template-columns: 1fr 1fr; }
 }

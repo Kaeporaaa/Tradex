@@ -88,7 +88,7 @@
     },
     {
       "id": "033-albitzur-fandango-la-m",
-      "titre": "Albitzur ",
+      "titre": "Albitzur",
       "titreProvisoire": false,
       "fichier": "audio/033 - Albitzur - Fandango - La m.mp3",
       "type": "autre",
@@ -127,7 +127,7 @@
       "id": "107-tref-allez-bourres-fa-min-re-min",
       "titre": "Allez Bourrées",
       "titreProvisoire": false,
-      "fichier": "audio/107 - tref - Allez Bourrés fa min re min.mp3",
+      "fichier": "audio/107 - tref - Allez Bourrées fa min re min.mp3",
       "type": "bourree-2-temps",
       "categorie": "",
       "toniqueNote": "fa",
@@ -312,7 +312,7 @@
     },
     {
       "id": "043-beatrix-reel-version-jean-leo",
-      "titre": "Beatrix reel ",
+      "titre": "Beatrix reel",
       "titreProvisoire": false,
       "fichier": "audio/043 - beatrix reel - version jean leo.mp3",
       "type": "reel",
@@ -340,7 +340,7 @@
     },
     {
       "id": "231-beoga-bill-harts-re-min",
-      "titre": "Bill harts ",
+      "titre": "Bill harts",
       "titreProvisoire": false,
       "fichier": "audio/231 - beoga -bill harts - re min.mp3",
       "type": "reel",
@@ -438,7 +438,7 @@
     },
     {
       "id": "244-flook-blue-ball-si-min",
-      "titre": "Blue Ball ",
+      "titre": "Blue Ball",
       "titreProvisoire": false,
       "fichier": "audio/244 - flook - blue ball - si min.mp3",
       "type": "autre",
@@ -609,7 +609,7 @@
     },
     {
       "id": "029-beoga-boxy-set-1-sol",
-      "titre": "Boxy Set 1 ",
+      "titre": "Boxy Set 1",
       "titreProvisoire": false,
       "fichier": "audio/029 - beoga - Boxy Set 1 - sol.mp3",
       "type": "reel",
@@ -630,7 +630,7 @@
     },
     {
       "id": "271-beoga-boxy-set-2-sol",
-      "titre": "Boxy Set 2 ",
+      "titre": "Boxy Set 2",
       "titreProvisoire": false,
       "fichier": "audio/271 - beoga - Boxy Set 2 - sol.mp3",
       "type": "reel",
@@ -661,8 +661,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": 0.33,
-      "loopFin": 36.71
+      "loopDebut": null,
+      "loopFin": null
     },
     {
       "id": "144-pablo-golder-c-pas-clair-la-min",
@@ -729,8 +729,8 @@
       "niveau": "maitrise",
       "notes": "Tonique en attente, à rejouer pour confirmer",
       "joueAvec": [],
-      "loopDebut": 0,
-      "loopFin": 68.14
+      "loopDebut": null,
+      "loopFin": null
     },
     {
       "id": "197-castle-kelly",
@@ -1193,7 +1193,7 @@
     },
     {
       "id": "005-desaunay-dimanche-matin-la-min",
-      "titre": "Dimanche Matin ",
+      "titre": "Dimanche Matin",
       "titreProvisoire": false,
       "fichier": "audio/005 - desaunay - dimanche matin - La min.mp3",
       "type": "valse",
@@ -1377,7 +1377,7 @@
     },
     {
       "id": "229-beoga-eat-the-crust-la-min",
-      "titre": "Eat the Crust ",
+      "titre": "Eat the Crust",
       "titreProvisoire": false,
       "fichier": "audio/229 - beoga - eat the crust - la min.mp3",
       "type": "slip-jig",
@@ -1491,7 +1491,7 @@
     },
     {
       "id": "227-beoga-exploding-bow-1-si-min",
-      "titre": "Exploding Bow 1 ",
+      "titre": "Exploding Bow 1",
       "titreProvisoire": false,
       "fichier": "audio/227 - beoga - Exploding Bow 1 - Si min.mp3",
       "type": "jig",
@@ -1586,7 +1586,7 @@
     },
     {
       "id": "230-beoga-flamin-factory-sol-min",
-      "titre": "Flamin Factory ",
+      "titre": "Flamin Factory",
       "titreProvisoire": false,
       "fichier": "audio/230 - beoga - flamin factory - sol min.mp3",
       "type": "jig",
@@ -1673,7 +1673,7 @@
     },
     {
       "id": "052-beoga-funk-in-class-1-re-min",
-      "titre": "Funk in class 1 ",
+      "titre": "Funk in class 1",
       "titreProvisoire": false,
       "fichier": "audio/052 - beoga - Funk in class 1 - re min.mp3",
       "type": "scottish",
@@ -2054,7 +2054,7 @@
     },
     {
       "id": "086-beoga-inver-bank-2-si-min",
-      "titre": "Inver Bank 2 ",
+      "titre": "Inver Bank 2",
       "titreProvisoire": false,
       "fichier": "audio/086 - beoga - inver bank 2 - Si min.mp3",
       "type": "jig",
@@ -2436,56 +2436,6 @@
       "joueAvec": [],
       "loopDebut": null,
       "loopFin": null
-    },
-    {
-      "id": "003-la-mal-aimable-mta52ek2tmqg",
-      "titre": "La mal Aimable",
-      "titreProvisoire": false,
-      "fichier": "audio/003 - La mal Aimable.mp3",
-      "type": "valse",
-      "categorie": "morvan",
-      "toniqueNote": "la",
-      "toniqueMode": "mineur",
-      "groupe": "Trad",
-      "source": "morvan",
-      "niveau": "maitrise",
-      "notes": "",
-      "joueAvec": [
-        "Aline",
-        "Damien",
-        "Ero-Cook",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
-      ],
-      "loopDebut": 0.8,
-      "loopFin": 35.73
-    },
-    {
-      "id": "003-la-mal-aimable-mta52ek2tmqg",
-      "titre": "La mal Aimable",
-      "titreProvisoire": false,
-      "fichier": "audio/003 - La mal Aimable.mp3",
-      "type": "valse",
-      "categorie": "morvan",
-      "toniqueNote": "la",
-      "toniqueMode": "mineur",
-      "groupe": "Trad",
-      "source": "morvan",
-      "niveau": "maitrise",
-      "notes": "",
-      "joueAvec": [
-        "Aline",
-        "Damien",
-        "Ero-Cook",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
-      ],
-      "loopDebut": 0.8,
-      "loopFin": 35.73
     },
     {
       "id": "003-la-mal-aimable-mta52ek2tmqg",
@@ -3007,7 +2957,7 @@
     },
     {
       "id": "272-beoga-madness-la-m",
-      "titre": "Madness ",
+      "titre": "Madness",
       "titreProvisoire": false,
       "fichier": "audio/272 - beoga - Madness - La m.mp3",
       "type": "jig",
@@ -3784,7 +3734,7 @@
     },
     {
       "id": "224-beoga-prelude-polkas-1-si-min",
-      "titre": "Prelude Polkas 1 ",
+      "titre": "Prelude Polkas 1",
       "titreProvisoire": false,
       "fichier": "audio/224 - beoga - Prelude Polkas 1 - si min.mp3",
       "type": "polka",
@@ -3921,54 +3871,6 @@
       "niveau": "maitrise",
       "notes": "S'enchaîne après Cleveland Park (piste 028) ; pas de titre pour l'instant",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
-    },
-    {
-      "id": "011-refut-scottish-do-mtaki8u0fm60",
-      "titre": "refut scottish do",
-      "titreProvisoire": true,
-      "fichier": "audio/011 - refut - scottish do.mp3",
-      "type": "valse",
-      "categorie": "morvan",
-      "toniqueNote": "do",
-      "toniqueMode": "majeur",
-      "groupe": "Re-fût de Chêne",
-      "source": "",
-      "niveau": "maitrise",
-      "notes": "Majeur/mineur",
-      "joueAvec": [
-        "Aline",
-        "Ero-Cook",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
-      ],
-      "loopDebut": null,
-      "loopFin": null
-    },
-    {
-      "id": "011-refut-scottish-do-mtaki8u0fm60",
-      "titre": "refut scottish do",
-      "titreProvisoire": true,
-      "fichier": "audio/011 - refut - scottish do.mp3",
-      "type": "valse",
-      "categorie": "morvan",
-      "toniqueNote": "do",
-      "toniqueMode": "majeur",
-      "groupe": "Re-fût de Chêne",
-      "source": "",
-      "niveau": "maitrise",
-      "notes": "Majeur/mineur",
-      "joueAvec": [
-        "Aline",
-        "Ero-Cook",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
-      ],
       "loopDebut": null,
       "loopFin": null
     },
@@ -5753,54 +5655,6 @@
       "joueAvec": [],
       "loopDebut": null,
       "loopFin": null
-    },
-    {
-      "id": "004-venezuela-mta56sj1nwdi",
-      "titre": "Venezuela",
-      "titreProvisoire": false,
-      "fichier": "audio/004 - Venezuela.mp3",
-      "type": "valse",
-      "categorie": "autre",
-      "toniqueNote": "la",
-      "toniqueMode": "mineur",
-      "groupe": "Trad",
-      "source": "morvan",
-      "niveau": "maitrise",
-      "notes": "Valse Venezuellienne",
-      "joueAvec": [
-        "Aline",
-        "Damien",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
-      ],
-      "loopDebut": 1.44,
-      "loopFin": 64.28
-    },
-    {
-      "id": "004-venezuela-mta56sj1nwdi",
-      "titre": "Venezuela",
-      "titreProvisoire": false,
-      "fichier": "audio/004 - Venezuela.mp3",
-      "type": "valse",
-      "categorie": "autre",
-      "toniqueNote": "la",
-      "toniqueMode": "mineur",
-      "groupe": "Trad",
-      "source": "morvan",
-      "niveau": "maitrise",
-      "notes": "Valse Venezuellienne",
-      "joueAvec": [
-        "Aline",
-        "Damien",
-        "Jean",
-        "Nina",
-        "Sam",
-        "Toncarounet"
-      ],
-      "loopDebut": 1.44,
-      "loopFin": 64.28
     },
     {
       "id": "004-venezuela-mta56sj1nwdi",
