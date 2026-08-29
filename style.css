@@ -60,6 +60,14 @@ body {
   white-space: nowrap;
 }
 
+/* Petit logo texte provisoire, en attendant un vrai visuel */
+.brand-tradex {
+  color: var(--waveform-color);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 8px var(--loop-highlight);
+}
+
 .header-actions {
   display: flex;
   gap: 8px;
