@@ -661,8 +661,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.33,
+      "loopFin": 36.71
     },
     {
       "id": "144-pablo-golder-c-pas-clair-la-min",
@@ -729,8 +729,8 @@
       "niveau": "maitrise",
       "notes": "Tonique en attente, à rejouer pour confirmer",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 68.14
     },
     {
       "id": "197-castle-kelly",
