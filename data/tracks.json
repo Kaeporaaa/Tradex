@@ -882,8 +882,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 39.36
     },
     {
       "id": "321-o-rag-colonel-fraser",
@@ -899,8 +899,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 4.05,
+      "loopFin": 47.59
     },
     {
       "id": "167-cutting-come-back-sol",
@@ -916,8 +916,8 @@
       "niveau": "maitrise",
       "notes": "S'enchaîne après \"Charlie\"",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 3.95,
+      "loopFin": 37.16
     },
     {
       "id": "308-lunasa-cotati-nights-3",
@@ -950,8 +950,8 @@
       "niveau": "en-cours",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.58,
+      "loopFin": 37.22
     },
     {
       "id": "279-buille-crack-macphellimy-s-reel-la",
@@ -967,8 +967,8 @@
       "niveau": "maitrise",
       "notes": "Fait partie du diptyque avec \"Sergeant Pluck's\", album \"Buille 2\"",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 34.81
     },
     {
       "id": "317-naragonia-crossbills",
@@ -984,8 +984,8 @@
       "niveau": "maitrise",
       "notes": "Diptyque \"Lapwings/Crossbills\", album \"Mira\"",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.05,
+      "loopFin": 39.91
     },
     {
       "id": "200-solas-da-new-rigged-ship",
@@ -1001,12 +1001,12 @@
       "niveau": "maitrise",
       "notes": "Reel traditionnel des Shetland",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.09,
+      "loopFin": 23.32
     },
     {
       "id": "138-daihma-01",
-      "titre": "daihma 01 -",
+      "titre": "Dàimh 01 -",
       "titreProvisoire": true,
       "fichier": "audio/138 - daihma - 01 -.mp3",
       "type": "autre",
@@ -1018,12 +1018,12 @@
       "niveau": "maitrise",
       "notes": "[import en masse — à vérifier] ; le nom exact du groupe est \"Dàimh\" (groupe écossais, Highlands/Hébrides, mélange puirt à beul/reels/jigs/strathspeys) et pas \"Daimha\". Les titres de fichiers (01, 01-2, 01-3, 4-bw, 6-3, 6-4) sont des numéros de piste/medley que je n'ai pas réussi à faire correspondre avec certitude à des titres précis de leur discographie. Le type \"valse\" par défaut est probablement faux (Dàimh joue surtout reels/jigs/strathspeys/marches), laissé en \"autre\" à corriger à l'oreille.",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 1.17,
+      "loopFin": 35.85
     },
     {
       "id": "139-daihma-01-2",
-      "titre": "daihma 01-2 -",
+      "titre": "Dàimh 01-2 -",
       "titreProvisoire": true,
       "fichier": "audio/139 - daihma - 01-2 -.mp3",
       "type": "autre",
@@ -1035,12 +1035,12 @@
       "niveau": "maitrise",
       "notes": "[import en masse — à vérifier] ; le nom exact du groupe est \"Dàimh\" (groupe écossais, Highlands/Hébrides, mélange puirt à beul/reels/jigs/strathspeys) et pas \"Daimha\". Les titres de fichiers (01, 01-2, 01-3, 4-bw, 6-3, 6-4) sont des numéros de piste/medley que je n'ai pas réussi à faire correspondre avec certitude à des titres précis de leur discographie. Le type \"valse\" par défaut est probablement faux (Dàimh joue surtout reels/jigs/strathspeys/marches), laissé en \"autre\" à corriger à l'oreille.",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.15,
+      "loopFin": 16.66
     },
     {
       "id": "140-daihma-01-3",
-      "titre": "daihma 01-3 -",
+      "titre": "Dàimh 01-3 -",
       "titreProvisoire": true,
       "fichier": "audio/140 - daihma - 01-3 -.mp3",
       "type": "autre",
@@ -1052,12 +1052,12 @@
       "niveau": "maitrise",
       "notes": "[import en masse — à vérifier] ; le nom exact du groupe est \"Dàimh\" (groupe écossais, Highlands/Hébrides, mélange puirt à beul/reels/jigs/strathspeys) et pas \"Daimha\". Les titres de fichiers (01, 01-2, 01-3, 4-bw, 6-3, 6-4) sont des numéros de piste/medley que je n'ai pas réussi à faire correspondre avec certitude à des titres précis de leur discographie. Le type \"valse\" par défaut est probablement faux (Dàimh joue surtout reels/jigs/strathspeys/marches), laissé en \"autre\" à corriger à l'oreille.",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 15.65
     },
     {
       "id": "286-daihma-4-bw",
-      "titre": "daihma 4 bw -",
+      "titre": "Dàimh 4 bw -",
       "titreProvisoire": true,
       "fichier": "audio/286 - daihma - 4 bw -.mp3",
       "type": "autre",
@@ -1069,12 +1069,12 @@
       "niveau": "maitrise",
       "notes": "Groupe \"Dàimh\" confirmé (écossais, Highlands/Hébrides) ; numéro de piste/medley non identifié à un titre précis — l'utilisateur pourra compléter s'il retrouve l'album",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.63,
+      "loopFin": 17.26
     },
     {
       "id": "284-daihma-6-3",
-      "titre": "daihma 6-3 -",
+      "titre": "Dàimh 6-3 -",
       "titreProvisoire": true,
       "fichier": "audio/284 - daihma -  6-3 -.mp3",
       "type": "autre",
@@ -1086,12 +1086,12 @@
       "niveau": "maitrise",
       "notes": "[import en masse — à vérifier] ; le nom exact du groupe est \"Dàimh\" (groupe écossais, Highlands/Hébrides, mélange puirt à beul/reels/jigs/strathspeys) et pas \"Daimha\". Les titres de fichiers (01, 01-2, 01-3, 4-bw, 6-3, 6-4) sont des numéros de piste/medley que je n'ai pas réussi à faire correspondre avec certitude à des titres précis de leur discographie. Le type \"valse\" par défaut est probablement faux (Dàimh joue surtout reels/jigs/strathspeys/marches), laissé en \"autre\" à corriger à l'oreille.",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.19,
+      "loopFin": 18.11
     },
     {
       "id": "285-daihma-6-4",
-      "titre": "daihma 6-4 -",
+      "titre": "Dàimh 6-4 -",
       "titreProvisoire": true,
       "fichier": "audio/285 - daihma -  6-4 -.mp3",
       "type": "autre",
@@ -1103,8 +1103,8 @@
       "niveau": "maitrise",
       "notes": "Groupe \"Dàimh\" confirmé (écossais, Highlands/Hébrides) ; numéro de piste/medley non identifié à un titre précis — l'utilisateur pourra compléter s'il retrouve l'album",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.03,
+      "loopFin": 17.08
     },
     {
       "id": "287-danny-o-mahony-2-2",
@@ -1120,8 +1120,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0,
+      "loopFin": 75.93
     },
     {
       "id": "309-lunasa-deireadh-fomhair-1",
@@ -1137,8 +1137,8 @@
       "niveau": "maitrise",
       "notes": "",
       "joueAvec": [],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 0.87,
+      "loopFin": 35.21
     },
     {
       "id": "035-sedeloc-deja-3-h",
@@ -1203,12 +1203,12 @@
       "groupe": "Trad",
       "source": "Serge Desaunay, appris par Aline",
       "niveau": "maitrise",
-      "notes": "",
+      "notes": "Ultra mal joué en accelerant lol",
       "joueAvec": [
         "Aline"
       ],
-      "loopDebut": null,
-      "loopFin": null
+      "loopDebut": 1.07,
+      "loopFin": 63.21
     },
     {
       "id": "280-buille-dog-a-l-orange-1-si-min",
