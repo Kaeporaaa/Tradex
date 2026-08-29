@@ -36,6 +36,12 @@
         </select>
       </div>
       <div class="filter-group">
+        <label for="filter-tonique">Tonalité</label>
+        <select id="filter-tonique">
+          <option value="">Toutes</option>
+        </select>
+      </div>
+      <div class="filter-group">
         <label for="filter-categorie">Origine</label>
         <select id="filter-categorie">
           <option value="">Toutes</option>
@@ -108,6 +114,7 @@
             <input type="checkbox" id="loop-checkbox" checked>
             Boucle
           </label>
+          <button type="button" id="download-btn" class="btn btn-small" title="Télécharger ce morceau pour l'écouter hors connexion">⭳ Télécharger</button>
           <span class="time-display"><span id="time-current">0:00</span> / <span id="time-total">0:00</span></span>
         </div>
       </div>

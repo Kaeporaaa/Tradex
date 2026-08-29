@@ -305,6 +305,31 @@ function populateTypeFilter() {
     });
 }
 
+function toniqueKey(t) {
+  if (!t.toniqueNote) return "";
+  return t.toniqueNote + "|" + (t.toniqueMode || "");
+}
+
+function populateToniqueFilter() {
+  const sel = document.getElementById("filter-tonique");
+  const current = sel.value;
+  sel.querySelectorAll("option:not(:first-child)").forEach(o => o.remove());
+  const used = new Map(); // clé "note|mode" -> libellé affiché
+  tracks.forEach(t => {
+    const key = toniqueKey(t);
+    if (key && !used.has(key)) used.set(key, toniqueLabel(t));
+  });
+  Array.from(used.entries())
+    .sort((a, b) => a[1].localeCompare(b[1], "fr"))
+    .forEach(([key, label]) => {
+      const opt = document.createElement("option");
+      opt.value = key;
+      opt.textContent = label;
+      sel.appendChild(opt);
+    });
+  if (used.has(current)) sel.value = current;
+}
+
 function populateCategorieFilter() {
   const sel = document.getElementById("filter-categorie");
   const used = new Set(tracks.map(t => t.categorie).filter(Boolean));
@@ -357,6 +382,7 @@ function populateMusicienFilter() {
 
 function refreshFilterOptions() {
   populateTypeFilter();
+  populateToniqueFilter();
   populateCategorieFilter();
   populateMusicienFilter();
   populateGroupeFilter();
@@ -373,6 +399,7 @@ function toniqueLabel(t) {
 function currentFilters() {
   return {
     type: document.getElementById("filter-type").value,
+    tonique: document.getElementById("filter-tonique").value,
     categorie: document.getElementById("filter-categorie").value,
     niveau: document.getElementById("filter-niveau").value,
     musicien: document.getElementById("filter-musicien").value,
@@ -383,9 +410,10 @@ function currentFilters() {
 }
 
 function filteredTracks() {
-  const { type, categorie, niveau, musicien, groupe, titreProvisoire, q } = currentFilters();
+  const { type, tonique, categorie, niveau, musicien, groupe, titreProvisoire, q } = currentFilters();
   return tracks.filter(t => {
     if (type && t.type !== type) return false;
+    if (tonique && toniqueKey(t) !== tonique) return false;
     if (categorie && t.categorie !== categorie) return false;
     if (niveau && t.niveau !== niveau) return false;
     if (musicien && !(t.joueAvec || []).includes(musicien)) return false;
@@ -556,7 +584,7 @@ function onFieldEdit(field, value) {
   // La ligne de méta-infos affichée dans la liste (type, catégorie, tonalité, niveau,
   // titre...) doit rester à jour immédiatement, sans attendre une re-sélection.
   renderList();
-  if (field === "type" || field === "categorie" || field === "groupe") refreshFilterOptions();
+  if (field === "type" || field === "categorie" || field === "groupe" || field === "toniqueNote" || field === "toniqueMode") refreshFilterOptions();
   updateJsonSnippet(t);
   if (field === "loopDebut" || field === "loopFin") drawWaveform();
 }
@@ -876,6 +904,43 @@ function formatTime(s) {
   return m + ":" + String(sec).padStart(2, "0");
 }
 
+/* ---------- Téléchargement (écoute hors connexion) ---------- */
+
+async function downloadCurrentTrack() {
+  const t = currentTrack();
+  if (!t) return;
+  const btn = document.getElementById("download-btn");
+  const originalLabel = btn.textContent;
+  btn.textContent = "⏳ …";
+  btn.disabled = true;
+  try {
+    let blob;
+    if (t.__local) {
+      blob = await getBlob(t.id);
+      if (!blob) throw new Error("audio local introuvable (a-t-il été effacé au rechargement de la page ?)");
+    } else {
+      const res = await fetch(t.fichier, { cache: "no-store" });
+      if (!res.ok) throw new Error("HTTP " + res.status);
+      blob = await res.blob();
+    }
+    const ext = (t.fichier.match(/\.[a-z0-9]+$/i) || [".mp3"])[0];
+    const filename = (t.titre || "morceau").replace(/[\\/:*?"<>|]+/g, "").trim() + ext;
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  } catch (e) {
+    alert("Impossible de télécharger ce morceau : " + e.message);
+  } finally {
+    btn.textContent = originalLabel;
+    btn.disabled = false;
+  }
+}
+
 /* ---------- Ajout / suppression de morceaux ---------- */
 
 async function handleFilesAdded(fileList) {
@@ -965,6 +1030,7 @@ function init() {
 
   document.getElementById("search-input").addEventListener("input", debounce(renderList, 150));
   document.getElementById("filter-type").addEventListener("change", renderList);
+  document.getElementById("filter-tonique").addEventListener("change", renderList);
   document.getElementById("filter-categorie").addEventListener("change", renderList);
   document.getElementById("filter-niveau").addEventListener("change", renderList);
   document.getElementById("filter-musicien").addEventListener("change", renderList);
@@ -1010,6 +1076,7 @@ function init() {
 
   document.getElementById("play-btn").addEventListener("click", togglePlay);
   document.getElementById("loop-checkbox").addEventListener("change", restartIfPlaying);
+  document.getElementById("download-btn").addEventListener("click", downloadCurrentTrack);
 
   document.getElementById("back-to-list-btn").addEventListener("click", () => {
     stopPlayback();

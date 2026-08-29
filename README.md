@@ -93,15 +93,22 @@ committé `tracks.json`.
 ## Interface : liste et lecteur
 
 L'appli a deux vues, à toute taille d'écran (téléphone comme ordinateur) : une vue
-**liste** (filtres en haut — Groupe, Rythme, Origine, En commun avec, Niveau, et la case
-« Titres à déf. » pour n'afficher que les titres provisoires — puis la liste des
-morceaux, avec un résumé type/tonalité/groupe/niveau) et une vue **lecteur**, qui
+**liste** (filtres en haut — Groupe, Rythme, Tonalité, Origine, En commun avec, Niveau,
+et la case « Titres à déf. » pour n'afficher que les titres provisoires — puis la liste
+des morceaux, avec un résumé type/tonalité/groupe/niveau) et une vue **lecteur**, qui
 s'ouvre en tapant sur un morceau. Le bouton « ← Retour » en haut du lecteur revient à
 la liste. Les boutons sont volontairement grands pour rester faciles à toucher au doigt
 sur le terrain.
 
 Dans la vue lecteur, taper/cliquer sur la forme d'onde lance la lecture depuis cet
-endroit — pas besoin d'ouvrir quoi que ce soit pour ça. Le lien **« ✎ Edit »** déplie
+endroit — pas besoin d'ouvrir quoi que ce soit pour ça. Le bouton **« ⭳ Télécharger »**
+à côté de Lecture/Boucle récupère le fichier audio du morceau affiché pour l'écouter
+hors connexion (pratique pour bosser sur le terrain sans réseau) — sur iPhone/Safari,
+le fichier s'ouvre d'abord dans le lecteur audio du navigateur ; utilise ensuite le
+bouton de partage pour l'enregistrer dans l'appli Fichiers si tu veux le garder en
+dehors du navigateur.
+
+Le lien **« ✎ Edit »** déplie
 un panneau (à côté sur grand écran, en dessous sur petit écran) avec tous les réglages
 détaillés du morceau : type, tonalité, groupe, notes, et les points de boucle. C'est
 uniquement dans ce panneau ouvert que glisser sur la forme d'onde redéfinit la boucle
