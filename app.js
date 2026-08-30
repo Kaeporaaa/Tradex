@@ -303,6 +303,13 @@ function rebuildMergedTracks() {
     .map(id => Object.assign(emptyTrack({ id }), overrides[id] || {}, { __local: true }));
 
   tracks = fromBase.concat(fromLocal);
+  // Un espace en début/fin de titre est un artefact courant d'export (que ce
+  // soit d'ici ou d'un autre outil) — jamais voulu, donc on le nettoie
+  // systématiquement dès le chargement, pour qu'il ne puisse plus se
+  // propager dans les exports suivants.
+  tracks.forEach(t => {
+    if (typeof t.titre === "string" && t.titre !== t.titre.trim()) t.titre = t.titre.trim();
+  });
   tracks.sort((a, b) => (a.titre || "").localeCompare(b.titre || "", "fr"));
 }
 
@@ -505,16 +512,29 @@ function encodeFichierPath(path) {
   return path.split("/").map(encodeURIComponent).join("/");
 }
 
+// Selon l'étape d'import/nettoyage, certains fichiers utilisent un "_" là où
+// le titre a été nettoyé en apostrophe (ou l'inverse) — ex. un fichier
+// "l_Orange" pendant que le titre affiche "l'Orange". On tente les deux sens.
+function swapUnderscoreApostrophe(path) {
+  const variants = [];
+  if (path.includes("_")) variants.push(path.split("_").join("'"));
+  if (path.includes("'")) variants.push(path.split("'").join("_"));
+  return variants;
+}
+
 // Certains fichiers audio ont un nom accentué stocké dans une forme Unicode
 // (NFC ou NFD) différente de celle enregistrée dans tracks.json — fréquent
 // avec des bibliothèques créées sous macOS. Si la requête directe échoue, on
-// retente avec les variantes normalisées, et avec les variantes correctement
-// encodées pour les caractères spéciaux d'URL, avant d'abandonner.
+// retente avec les variantes normalisées, avec les variantes "_"/"'", et avec
+// les variantes correctement encodées pour les caractères spéciaux d'URL,
+// avant d'abandonner.
 async function fetchAudioSmart(fichier) {
   const raw = [fichier];
   if (typeof fichier.normalize === "function") {
     raw.push(fichier.normalize("NFC"), fichier.normalize("NFD"));
   }
+  raw.slice().forEach(v => swapUnderscoreApostrophe(v).forEach(sv => raw.push(sv)));
+
   const attempts = [];
   raw.forEach(variant => {
     attempts.push(variant);
@@ -1169,6 +1189,13 @@ function init() {
   });
 
   document.getElementById("edit-titre").addEventListener("input", debounce(e => onFieldEdit("titre", e.target.value), 250));
+  document.getElementById("edit-titre").addEventListener("blur", e => {
+    const trimmed = e.target.value.trim();
+    if (trimmed !== e.target.value) {
+      e.target.value = trimmed;
+      onFieldEdit("titre", trimmed);
+    }
+  });
   document.getElementById("edit-titre-provisoire").addEventListener("change", e => onFieldEdit("titreProvisoire", e.target.checked));
   document.getElementById("edit-type").addEventListener("change", e => onFieldEdit("type", e.target.value));
   document.getElementById("edit-categorie").addEventListener("change", e => onFieldEdit("categorie", e.target.value));

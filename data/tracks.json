@@ -88,7 +88,7 @@
     },
     {
       "id": "033-albitzur-fandango-la-m",
-      "titre": "Albitzur ",
+      "titre": "Albitzur",
       "titreProvisoire": false,
       "fichier": "audio/033 - Albitzur - Fandango - La m.mp3",
       "type": "autre",
@@ -312,7 +312,7 @@
     },
     {
       "id": "043-beatrix-reel-version-jean-leo",
-      "titre": "Beatrix reel ",
+      "titre": "Beatrix reel",
       "titreProvisoire": false,
       "fichier": "audio/043 - beatrix reel - version jean leo.mp3",
       "type": "reel",
@@ -340,7 +340,7 @@
     },
     {
       "id": "231-beoga-bill-harts-re-min",
-      "titre": "Bill harts ",
+      "titre": "Bill harts",
       "titreProvisoire": false,
       "fichier": "audio/231 - beoga -bill harts - re min.mp3",
       "type": "reel",
@@ -438,7 +438,7 @@
     },
     {
       "id": "244-flook-blue-ball-si-min",
-      "titre": "Blue Ball ",
+      "titre": "Blue Ball",
       "titreProvisoire": false,
       "fichier": "audio/244 - flook - blue ball - si min.mp3",
       "type": "autre",
@@ -609,7 +609,7 @@
     },
     {
       "id": "029-beoga-boxy-set-1-sol",
-      "titre": "Boxy Set 1 ",
+      "titre": "Boxy Set 1",
       "titreProvisoire": false,
       "fichier": "audio/029 - beoga - Boxy Set 1 - sol.mp3",
       "type": "reel",
@@ -630,7 +630,7 @@
     },
     {
       "id": "271-beoga-boxy-set-2-sol",
-      "titre": "Boxy Set 2 ",
+      "titre": "Boxy Set 2",
       "titreProvisoire": false,
       "fichier": "audio/271 - beoga - Boxy Set 2 - sol.mp3",
       "type": "reel",
@@ -855,7 +855,7 @@
       "id": "028-refut-cleveland-park-re-m",
       "titre": "Cleveland Park",
       "titreProvisoire": false,
-      "fichier": "audio/028 - refut - cleveland park - Ré m.mp3",
+      "fichier": "audio/028 - refut - cleveland park - Rém.mp3",
       "type": "cercle",
       "categorie": "irish",
       "toniqueNote": "re",
@@ -1193,7 +1193,7 @@
     },
     {
       "id": "005-desaunay-dimanche-matin-la-min",
-      "titre": "Dimanche Matin ",
+      "titre": "Dimanche Matin",
       "titreProvisoire": false,
       "fichier": "audio/005 - desaunay - dimanche matin - La min.mp3",
       "type": "valse",
@@ -1377,7 +1377,7 @@
     },
     {
       "id": "229-beoga-eat-the-crust-la-min",
-      "titre": "Eat the Crust ",
+      "titre": "Eat the Crust",
       "titreProvisoire": false,
       "fichier": "audio/229 - beoga - eat the crust - la min.mp3",
       "type": "slip-jig",
@@ -1491,7 +1491,7 @@
     },
     {
       "id": "227-beoga-exploding-bow-1-si-min",
-      "titre": "Exploding Bow 1 ",
+      "titre": "Exploding Bow 1",
       "titreProvisoire": false,
       "fichier": "audio/227 - beoga - Exploding Bow 1 - Si min.mp3",
       "type": "jig",
@@ -1586,7 +1586,7 @@
     },
     {
       "id": "230-beoga-flamin-factory-sol-min",
-      "titre": "Flamin Factory ",
+      "titre": "Flamin Factory",
       "titreProvisoire": false,
       "fichier": "audio/230 - beoga - flamin factory - sol min.mp3",
       "type": "jig",
@@ -1673,7 +1673,7 @@
     },
     {
       "id": "052-beoga-funk-in-class-1-re-min",
-      "titre": "Funk in class 1 ",
+      "titre": "Funk in class 1",
       "titreProvisoire": false,
       "fichier": "audio/052 - beoga - Funk in class 1 - re min.mp3",
       "type": "scottish",
@@ -2054,7 +2054,7 @@
     },
     {
       "id": "086-beoga-inver-bank-2-si-min",
-      "titre": "Inver Bank 2 ",
+      "titre": "Inver Bank 2",
       "titreProvisoire": false,
       "fichier": "audio/086 - beoga - inver bank 2 - Si min.mp3",
       "type": "jig",
@@ -2957,7 +2957,7 @@
     },
     {
       "id": "272-beoga-madness-la-m",
-      "titre": "Madness ",
+      "titre": "Madness",
       "titreProvisoire": false,
       "fichier": "audio/272 - beoga - Madness - La m.mp3",
       "type": "jig",
@@ -3734,7 +3734,7 @@
     },
     {
       "id": "224-beoga-prelude-polkas-1-si-min",
-      "titre": "Prelude Polkas 1 ",
+      "titre": "Prelude Polkas 1",
       "titreProvisoire": false,
       "fichier": "audio/224 - beoga - Prelude Polkas 1 - si min.mp3",
       "type": "polka",
@@ -3827,7 +3827,7 @@
       "id": "031-reel-re-m-rizzla",
       "titre": "Reel Ré m Rizzla",
       "titreProvisoire": true,
-      "fichier": "audio/031 - Reel Ré m Rizzla.mp3",
+      "fichier": "audio/031 - Reel Rém Rizzla.mp3",
       "type": "reel",
       "categorie": "",
       "toniqueNote": "",
@@ -3844,7 +3844,7 @@
       "id": "031-reel-re-m-rizzla-original",
       "titre": "Reel Ré m Rizzla original",
       "titreProvisoire": true,
-      "fichier": "audio/031 - Reel Ré m Rizzla - original.mp3",
+      "fichier": "audio/031 - Reel Rém Rizzla - original.mp3",
       "type": "reel",
       "categorie": "",
       "toniqueNote": "",
